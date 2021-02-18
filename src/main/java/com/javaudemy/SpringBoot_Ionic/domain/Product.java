@@ -8,14 +8,14 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
-@Table(name = "tb_category")
-public class Category implements Serializable{
+@Table(name = "tb_product")
+public class Product implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	
@@ -23,41 +23,48 @@ public class Category implements Serializable{
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
 	private String name;
+	private Double price;
 	
 	//associations
-	@ManyToMany
-	@JoinTable (name = "CATEGORY_PRODUCT",
-				joinColumns = @JoinColumn(name = "category_id"),
-				inverseJoinColumns = @JoinColumn(name = "product_id")
-				)
-	List<Product> products = new ArrayList<>();
+	@JsonIgnore
+	@ManyToMany(mappedBy = "products")
+	List<Category> categories = new ArrayList<>();
 	
-	public Category()	{
+	public Product() {
 	}
-	
-	public Category(Integer id, String name) {
+
+	public Product(Integer id, String name, Double price) {
 		this.id = id;
 		this.name = name;
+		this.price = price;
 	}
-	
+
 	public Integer getId() {
 		return id;
 	}
-	
+
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	
+
 	public String getName() {
 		return name;
 	}
-	
+
 	public void setName(String name) {
 		this.name = name;
 	}
+
+	public Double getPrice() {
+		return price;
+	}
+
+	public void setPrice(Double price) {
+		this.price = price;
+	}
 	
-	public List<Product> getProducts() {
-		return products;
+	public List<Category> getCategories() {
+		return categories;
 	}
 
 	@Override
@@ -76,7 +83,7 @@ public class Category implements Serializable{
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Category other = (Category) obj;
+		Product other = (Product) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
