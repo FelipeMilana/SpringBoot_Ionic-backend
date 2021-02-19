@@ -1,8 +1,8 @@
 package com.javaudemy.SpringBoot_Ionic.domain;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -28,7 +28,7 @@ public class Product implements Serializable{
 	//associations
 	@JsonIgnore
 	@ManyToMany(mappedBy = "products")
-	List<Category> categories = new ArrayList<>();
+	Set<Category> categories = new HashSet<>();
 	
 	public Product() {
 	}
@@ -63,7 +63,7 @@ public class Product implements Serializable{
 		this.price = price;
 	}
 	
-	public List<Category> getCategories() {
+	public Set<Category> getCategories() {
 		return categories;
 	}
 

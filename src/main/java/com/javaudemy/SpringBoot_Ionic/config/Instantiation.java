@@ -7,12 +7,17 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
+import com.javaudemy.SpringBoot_Ionic.domain.Adress;
 import com.javaudemy.SpringBoot_Ionic.domain.Category;
 import com.javaudemy.SpringBoot_Ionic.domain.City;
+import com.javaudemy.SpringBoot_Ionic.domain.Client;
 import com.javaudemy.SpringBoot_Ionic.domain.Product;
 import com.javaudemy.SpringBoot_Ionic.domain.State;
+import com.javaudemy.SpringBoot_Ionic.domain.enums.ClientType;
+import com.javaudemy.SpringBoot_Ionic.repositories.AdressRepository;
 import com.javaudemy.SpringBoot_Ionic.repositories.CategoryRepository;
 import com.javaudemy.SpringBoot_Ionic.repositories.CityRepository;
+import com.javaudemy.SpringBoot_Ionic.repositories.ClientRepository;
 import com.javaudemy.SpringBoot_Ionic.repositories.ProductRepository;
 import com.javaudemy.SpringBoot_Ionic.repositories.StateRepository;
 
@@ -28,6 +33,10 @@ public class Instantiation implements CommandLineRunner {
 	private StateRepository stateRepository;
 	@Autowired
 	private CityRepository cityRepository;
+	@Autowired
+	private ClientRepository clientRepository;
+	@Autowired
+	private AdressRepository adressRepository;
 	
 	@Override
 	public void run(String... args) throws Exception {
@@ -36,6 +45,8 @@ public class Instantiation implements CommandLineRunner {
 		prodRepository.deleteAll();
 		stateRepository.deleteAll();
 		cityRepository.deleteAll();
+		clientRepository.deleteAll();
+		adressRepository.deleteAll();
 		
 		Product p1 = new Product(null, "Computador", 2000.00);
 		Product p2 = new Product(null, "Impressora", 800.00);
@@ -68,5 +79,17 @@ public class Instantiation implements CommandLineRunner {
 		
 		stateRepository.saveAll(Arrays.asList(s1, s2));
 		cityRepository.saveAll(Arrays.asList(c1, c2, c3));
+		
+		Client cli1 = new Client(null, "Maria Silva", "maria@gmail.com", "36378912377", ClientType.PESSOAFISICA);
+		
+		cli1.getTelephones().addAll(Arrays.asList("27363323", "93836393"));
+		
+		Adress ad1 = new Adress(null, "Rua Flores", "300", "Apto 203", "Jardim", "38220834", cli1, c1);
+		Adress ad2 = new Adress(null, "Avenida Matos", "105", "Sala 800", "Centro", "38777012", cli1, c2);
+		
+		cli1.getAdresses().addAll(Arrays.asList(ad1, ad2));
+		
+		clientRepository.saveAll(Arrays.asList(cli1));
+		adressRepository.saveAll(Arrays.asList(ad1, ad2));
 	}
 }

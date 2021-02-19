@@ -1,8 +1,8 @@
 package com.javaudemy.SpringBoot_Ionic.domain;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -27,7 +27,7 @@ public class State implements Serializable{
 	//associations
 	@JsonIgnore
 	@OneToMany(mappedBy = "state")
-	private List<City> cities = new ArrayList<>();
+	private Set<City> cities = new HashSet<>();
 	
 	public State() {
 	}
@@ -53,7 +53,7 @@ public class State implements Serializable{
 		this.name = name;
 	}
 	
-	public List<City> getCities() {
+	public Set<City> getCities() {
 		return cities;
 	}
 
