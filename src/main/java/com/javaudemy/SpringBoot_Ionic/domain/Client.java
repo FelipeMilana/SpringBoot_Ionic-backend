@@ -28,12 +28,12 @@ public class Client implements Serializable{
 	private String email;
 	private String cpfOrCnpj;
 	
+	//associations
+	private Integer type;
+	
 	@ElementCollection
 	@CollectionTable(name = "tb_Client_Telephones")
 	private Set<String> telephones = new HashSet<>();
-	
-	//associations
-	private Integer type;
 	
 	@OneToMany(mappedBy = "client")
 	private Set<Adress> adresses = new HashSet<>();
