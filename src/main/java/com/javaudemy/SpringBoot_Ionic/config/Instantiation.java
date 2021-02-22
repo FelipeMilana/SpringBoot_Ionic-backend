@@ -1,5 +1,6 @@
 package com.javaudemy.SpringBoot_Ionic.config;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,16 +9,23 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 import com.javaudemy.SpringBoot_Ionic.domain.Adress;
+import com.javaudemy.SpringBoot_Ionic.domain.CardPayment;
 import com.javaudemy.SpringBoot_Ionic.domain.Category;
 import com.javaudemy.SpringBoot_Ionic.domain.City;
 import com.javaudemy.SpringBoot_Ionic.domain.Client;
+import com.javaudemy.SpringBoot_Ionic.domain.Order;
+import com.javaudemy.SpringBoot_Ionic.domain.Payment;
 import com.javaudemy.SpringBoot_Ionic.domain.Product;
+import com.javaudemy.SpringBoot_Ionic.domain.SlipPayment;
 import com.javaudemy.SpringBoot_Ionic.domain.State;
 import com.javaudemy.SpringBoot_Ionic.domain.enums.ClientType;
+import com.javaudemy.SpringBoot_Ionic.domain.enums.PaymentState;
 import com.javaudemy.SpringBoot_Ionic.repositories.AdressRepository;
 import com.javaudemy.SpringBoot_Ionic.repositories.CategoryRepository;
 import com.javaudemy.SpringBoot_Ionic.repositories.CityRepository;
 import com.javaudemy.SpringBoot_Ionic.repositories.ClientRepository;
+import com.javaudemy.SpringBoot_Ionic.repositories.OrderRepository;
+import com.javaudemy.SpringBoot_Ionic.repositories.PaymentRepository;
 import com.javaudemy.SpringBoot_Ionic.repositories.ProductRepository;
 import com.javaudemy.SpringBoot_Ionic.repositories.StateRepository;
 
@@ -37,9 +45,15 @@ public class Instantiation implements CommandLineRunner {
 	private ClientRepository clientRepository;
 	@Autowired
 	private AdressRepository adressRepository;
+	@Autowired
+	private OrderRepository orderRepository;
+	@Autowired
+	private PaymentRepository payRepository;
 	
 	@Override
 	public void run(String... args) throws Exception {
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 		
 		catRepository.deleteAll();
 		prodRepository.deleteAll();
@@ -47,6 +61,8 @@ public class Instantiation implements CommandLineRunner {
 		cityRepository.deleteAll();
 		clientRepository.deleteAll();
 		adressRepository.deleteAll();
+		orderRepository.deleteAll();
+		payRepository.deleteAll();
 		
 		Product p1 = new Product(null, "Computador", 2000.00);
 		Product p2 = new Product(null, "Impressora", 800.00);
@@ -91,5 +107,20 @@ public class Instantiation implements CommandLineRunner {
 		
 		clientRepository.saveAll(Arrays.asList(cli1));
 		adressRepository.saveAll(Arrays.asList(ad1, ad2));
+		
+		Order o1 = new Order(null, sdf.parse("30/09/2017 10:32"), cli1, ad1);
+		Order o2 = new Order(null, sdf.parse("10/10/2017 19:35"), cli1, ad2);
+		
+		Payment pay1 =  new CardPayment(null, PaymentState.QUITADO, o1, 6);
+		o1.setPayment(pay1);
+		
+		Payment pay2 =  new SlipPayment(null, PaymentState.PENDENTE, o2, sdf.parse("20/10/2017 00:00"), null);
+		o2.setPayment(pay2);
+		
+		cli1.getOrders().addAll(Arrays.asList(o1, o2));
+		
+		orderRepository.saveAll(Arrays.asList(o1, o2));
+		payRepository.saveAll(Arrays.asList(pay1, pay2));
+		clientRepository.saveAll(Arrays.asList(cli1));
 	}
 }

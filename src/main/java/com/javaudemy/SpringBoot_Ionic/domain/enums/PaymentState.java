@@ -1,14 +1,15 @@
 package com.javaudemy.SpringBoot_Ionic.domain.enums;
 
-public enum ClientType {
+public enum PaymentState {
 
-	PESSOAFISICA(1, "Pessoa Física"),
-	PESSOAJURIDICA(2, "Pessoa Jurídica");
+	PENDENTE(1, "Pendente"),
+	QUITADO(2, "Quitado"),
+	CANCELADO(3, "Cancelado");
 	
 	private int code;
 	private String description;
 	
-	private ClientType(int code, String description) {
+	private PaymentState(int code, String description) {
 		this.code = code;
 		this.description = description;
 	}
@@ -21,26 +22,26 @@ public enum ClientType {
 		return description;
 	}
 	
-	public static ClientType toIntegerEnum(Integer code) {
+	public static PaymentState toIntegerEnum(Integer code) {
 		if(code == null) {
 			return null;
 		}
 		
-		for(ClientType ct: ClientType.values()) {
-			if(code.equals(ct.getCode())) {
-				return ct;
+		for(PaymentState ps: PaymentState.values()) {
+			if(code.equals(ps.getCode())) {
+				return ps;
 			}
 		}
 		
 		throw new IllegalArgumentException("Invalid id" + code);
 	}
 	
-	public static ClientType toStringEnum(String description) {
+	public static PaymentState toStringEnum(String description) {
 		if(description == null) {
 			return null;
 		}
 		
-		for(ClientType ps: ClientType.values()) {
+		for(PaymentState ps: PaymentState.values()) {
 			if(description.equals(ps.getDescription())) {
 				return ps;
 			}

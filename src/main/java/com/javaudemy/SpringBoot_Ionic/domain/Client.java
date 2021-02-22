@@ -1,7 +1,9 @@
 package com.javaudemy.SpringBoot_Ionic.domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CollectionTable;
@@ -13,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.javaudemy.SpringBoot_Ionic.domain.enums.ClientType;
 
 @Entity
@@ -29,14 +32,18 @@ public class Client implements Serializable{
 	private String cpfOrCnpj;
 	
 	//associations
-	private Integer type;
+	private String type;
 	
 	@ElementCollection
 	@CollectionTable(name = "tb_Client_Telephones")
 	private Set<String> telephones = new HashSet<>();
 	
+	@JsonIgnore
 	@OneToMany(mappedBy = "client")
 	private Set<Adress> adresses = new HashSet<>();
+	
+	@OneToMany(mappedBy = "client")
+	private List<Order> orders = new ArrayList<>();
 	
 	public Client() {
 	}
@@ -46,7 +53,7 @@ public class Client implements Serializable{
 		this.name = name;
 		this.email = email;
 		this.cpfOrCnpj = cpfOrCnpj;
-		this.type = type.getCode();
+		this.type = type.getDescription();
 	}
 
 	public Integer getId() {
@@ -86,15 +93,20 @@ public class Client implements Serializable{
 	}
 
 	public ClientType getType() {
-		return ClientType.toEnum(type);
+		return ClientType.toStringEnum(type);
 	}
 
 	public void setType(ClientType type) {
-		this.type = type.getCode();
+		this.type = type.getDescription();
 	}
 
 	public Set<Adress> getAdresses() {
 		return adresses;
+	}
+	
+
+	public List<Order> getOrders() {
+		return orders;
 	}
 
 	@Override
