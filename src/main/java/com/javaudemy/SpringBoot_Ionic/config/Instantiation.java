@@ -14,6 +14,7 @@ import com.javaudemy.SpringBoot_Ionic.domain.Category;
 import com.javaudemy.SpringBoot_Ionic.domain.City;
 import com.javaudemy.SpringBoot_Ionic.domain.Client;
 import com.javaudemy.SpringBoot_Ionic.domain.Order;
+import com.javaudemy.SpringBoot_Ionic.domain.OrderItem;
 import com.javaudemy.SpringBoot_Ionic.domain.Payment;
 import com.javaudemy.SpringBoot_Ionic.domain.Product;
 import com.javaudemy.SpringBoot_Ionic.domain.SlipPayment;
@@ -24,6 +25,7 @@ import com.javaudemy.SpringBoot_Ionic.repositories.AdressRepository;
 import com.javaudemy.SpringBoot_Ionic.repositories.CategoryRepository;
 import com.javaudemy.SpringBoot_Ionic.repositories.CityRepository;
 import com.javaudemy.SpringBoot_Ionic.repositories.ClientRepository;
+import com.javaudemy.SpringBoot_Ionic.repositories.OrderItemRepository;
 import com.javaudemy.SpringBoot_Ionic.repositories.OrderRepository;
 import com.javaudemy.SpringBoot_Ionic.repositories.PaymentRepository;
 import com.javaudemy.SpringBoot_Ionic.repositories.ProductRepository;
@@ -49,6 +51,8 @@ public class Instantiation implements CommandLineRunner {
 	private OrderRepository orderRepository;
 	@Autowired
 	private PaymentRepository payRepository;
+	@Autowired
+	private OrderItemRepository orderItemRepository;
 	
 	@Override
 	public void run(String... args) throws Exception {
@@ -63,6 +67,7 @@ public class Instantiation implements CommandLineRunner {
 		adressRepository.deleteAll();
 		orderRepository.deleteAll();
 		payRepository.deleteAll();
+		orderItemRepository.deleteAll();
 		
 		Product p1 = new Product(null, "Computador", 2000.00);
 		Product p2 = new Product(null, "Impressora", 800.00);
@@ -122,5 +127,20 @@ public class Instantiation implements CommandLineRunner {
 		orderRepository.saveAll(Arrays.asList(o1, o2));
 		payRepository.saveAll(Arrays.asList(pay1, pay2));
 		clientRepository.saveAll(Arrays.asList(cli1));
+		
+		OrderItem oi1 =  new OrderItem(o1, p1, 0.00, 1, 2000.00);
+		OrderItem oi2 =  new OrderItem(o1, p3, 0.00, 2, 80.00);
+		OrderItem oi3 =  new OrderItem(o2, p2, 100.00, 1, 800.00);
+		
+		o1.getItems().addAll(Arrays.asList(oi1,oi2));
+		o2.getItems().addAll(Arrays.asList(oi3));
+		
+		p1.getItems().addAll(Arrays.asList(oi1));
+		p2.getItems().addAll(Arrays.asList(oi3));
+		p3.getItems().addAll(Arrays.asList(oi2));
+		
+		orderItemRepository.saveAll(Arrays.asList(oi1, oi2, oi3));
+		orderRepository.saveAll(Arrays.asList(o1, o2));
+		prodRepository.saveAll(Arrays.asList(p1, p2, p3));
 	}
 }
