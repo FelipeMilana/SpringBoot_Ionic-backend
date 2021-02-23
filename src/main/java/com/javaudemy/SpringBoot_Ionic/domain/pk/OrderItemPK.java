@@ -6,7 +6,6 @@ import javax.persistence.Embeddable;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.javaudemy.SpringBoot_Ionic.domain.Order;
 import com.javaudemy.SpringBoot_Ionic.domain.Product;
 
@@ -15,7 +14,6 @@ public class OrderItemPK implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	
-	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "order_id")
 	private Order order;

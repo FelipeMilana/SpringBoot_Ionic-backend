@@ -33,6 +33,7 @@ public class Product implements Serializable{
 	@ManyToMany(mappedBy = "products")
 	Set<Category> categories = new HashSet<>();
 	
+	@JsonIgnore
 	@OneToMany(mappedBy = "id.product")
 	private Set<OrderItem> items = new HashSet<>();
 	
@@ -45,6 +46,7 @@ public class Product implements Serializable{
 		this.price = price;
 	}
 	
+	@JsonIgnore
 	public List<Order> getOrders() {
 		List<Order> list  =  new ArrayList<>();
 		for(OrderItem  oi:  items) {

@@ -7,6 +7,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.javaudemy.SpringBoot_Ionic.domain.enums.PaymentState;
 
 @Entity
@@ -16,8 +17,10 @@ public class SlipPayment extends Payment{
 	private static final long serialVersionUID = 1L;
 	
 	@Temporal(TemporalType.DATE)
+	@JsonFormat(pattern="dd/MM/yyyy")
 	private Date endDate;
 	@Temporal(TemporalType.DATE)
+	@JsonFormat(pattern="dd/MM/yyyy")
 	private Date paymentDate;
 	
 	public SlipPayment() {

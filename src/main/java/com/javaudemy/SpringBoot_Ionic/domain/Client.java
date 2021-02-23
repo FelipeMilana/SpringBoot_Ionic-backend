@@ -38,10 +38,10 @@ public class Client implements Serializable{
 	@CollectionTable(name = "tb_Client_Telephones")
 	private Set<String> telephones = new HashSet<>();
 	
-	@JsonIgnore
 	@OneToMany(mappedBy = "client")
 	private Set<Adress> adresses = new HashSet<>();
 	
+	@JsonIgnore
 	@OneToMany(mappedBy = "client")
 	private List<Order> orders = new ArrayList<>();
 	
