@@ -8,8 +8,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
@@ -25,12 +23,8 @@ public class Category implements Serializable{
 	private String name;
 	
 	//associations
-	@ManyToMany
-	@JoinTable (name = "CATEGORY_PRODUCT",
-				joinColumns = @JoinColumn(name = "category_id"),
-				inverseJoinColumns = @JoinColumn(name = "product_id")
-				)
-	List<Product> products = new ArrayList<>();
+	@ManyToMany(mappedBy =  "categories")
+	private List<Product> products = new ArrayList<>();
 	
 	public Category()	{
 	}

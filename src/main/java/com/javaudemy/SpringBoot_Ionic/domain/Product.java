@@ -10,6 +10,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -18,25 +20,28 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "tb_product")
-public class Product implements Serializable{
+public class Product implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	private String name;
 	private Double price;
-	
-	//associations
+
+	// associations
 	@JsonIgnore
-	@ManyToMany(mappedBy = "products")
-	Set<Category> categories = new HashSet<>();
-	
+	@ManyToMany
+	@JoinTable(name = "PRODUCT_CATEGORY", 
+			   joinColumns = @JoinColumn(name = "product_id"), 
+			   inverseJoinColumns = @JoinColumn(name = "category_id"))
+	private List<Category> categories = new ArrayList<>();
+
 	@JsonIgnore
 	@OneToMany(mappedBy = "id.product")
 	private Set<OrderItem> items = new HashSet<>();
-	
+
 	public Product() {
 	}
 
@@ -45,11 +50,11 @@ public class Product implements Serializable{
 		this.name = name;
 		this.price = price;
 	}
-	
+
 	@JsonIgnore
 	public List<Order> getOrders() {
-		List<Order> list  =  new ArrayList<>();
-		for(OrderItem  oi:  items) {
+		List<Order> list = new ArrayList<>();
+		for (OrderItem oi : items) {
 			list.add(oi.getOrder());
 		}
 		return list;
@@ -78,15 +83,15 @@ public class Product implements Serializable{
 	public void setPrice(Double price) {
 		this.price = price;
 	}
-	
-	public Set<Category> getCategories() {
+
+	public List<Category> getCategories() {
 		return categories;
 	}
 
 	public Set<OrderItem> getItems() {
 		return items;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;

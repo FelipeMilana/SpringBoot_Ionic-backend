@@ -59,33 +59,24 @@ public class Instantiation implements CommandLineRunner {
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 		
-		catRepository.deleteAll();
-		prodRepository.deleteAll();
-		stateRepository.deleteAll();
-		cityRepository.deleteAll();
-		clientRepository.deleteAll();
-		adressRepository.deleteAll();
-		orderRepository.deleteAll();
-		payRepository.deleteAll();
-		orderItemRepository.deleteAll();
+		Category cat1 = new Category(null, "Informatica");
+		Category cat2 = new Category(null, "Escritorio");
 		
 		Product p1 = new Product(null, "Computador", 2000.00);
 		Product p2 = new Product(null, "Impressora", 800.00);
 		Product p3 = new Product(null, "Mouse", 80.00);
 		
-		Category cat1 = new Category(null, "Informatica");
-		Category cat2 = new Category(null, "Escritorio");
-		
 		//ManyToMany associations
-		p1.getCategories().addAll(Arrays.asList(cat1));
-		p2.getCategories().addAll(Arrays.asList(cat1, cat2));
-		p3.getCategories().addAll(Arrays.asList(cat2));
-		
 		cat1.getProducts().addAll(Arrays.asList(p1, p2, p3));
 		cat2.getProducts().addAll(Arrays.asList(p2));
 		
-		prodRepository.saveAll(Arrays.asList(p1, p2, p3));
+		p1.getCategories().addAll(Arrays.asList(cat1));
+		p2.getCategories().addAll(Arrays.asList(cat1, cat2));
+		p3.getCategories().addAll(Arrays.asList(cat1));
+		
 		catRepository.saveAll(Arrays.asList(cat1, cat2));
+		prodRepository.saveAll(Arrays.asList(p1, p2, p3));
+		
 		
 		State s1 = new State(null, "Minas Gerais");
 		State s2 = new State(null, "São Paulo");
