@@ -61,6 +61,9 @@ public class Instantiation implements CommandLineRunner {
 		
 		Category cat1 = new Category(null, "Informatica");
 		Category cat2 = new Category(null, "Escritorio");
+		Category cat3 = new Category(null, "Eletrônicos");
+		Category cat4 = new Category(null, "Perfumaria");
+		Category cat5 = new Category(null, "Móveis");
 		
 		Product p1 = new Product(null, "Computador", 2000.00);
 		Product p2 = new Product(null, "Impressora", 800.00);
@@ -74,7 +77,7 @@ public class Instantiation implements CommandLineRunner {
 		p2.getCategories().addAll(Arrays.asList(cat1, cat2));
 		p3.getCategories().addAll(Arrays.asList(cat1));
 		
-		catRepository.saveAll(Arrays.asList(cat1, cat2));
+		catRepository.saveAll(Arrays.asList(cat1, cat2, cat3, cat4, cat5));
 		prodRepository.saveAll(Arrays.asList(p1, p2, p3));
 		
 		
