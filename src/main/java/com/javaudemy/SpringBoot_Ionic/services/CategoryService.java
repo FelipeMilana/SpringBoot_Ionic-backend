@@ -11,6 +11,7 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import com.javaudemy.SpringBoot_Ionic.domain.Category;
+import com.javaudemy.SpringBoot_Ionic.domain.dto.CategoryDTO;
 import com.javaudemy.SpringBoot_Ionic.repositories.CategoryRepository;
 import com.javaudemy.SpringBoot_Ionic.services.exceptions.DataIntegrityException;
 import com.javaudemy.SpringBoot_Ionic.services.exceptions.ObjectNotFoundException;
@@ -55,6 +56,10 @@ public class CategoryService {
 	public Page<Category> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
 		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
 		return repository.findAll(pageRequest);
+	}
+	
+	public Category fromDTO(CategoryDTO objDTO) {
+		return new Category(objDTO.getId(), objDTO.getName());
 	}
 	
 	private Category updating(Category oldObj, Category obj) {
