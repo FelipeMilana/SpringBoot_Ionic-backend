@@ -7,7 +7,9 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
 import com.javaudemy.SpringBoot_Ionic.domain.Client;
+import com.javaudemy.SpringBoot_Ionic.services.validations.UpdateClient;
 
+@UpdateClient
 public class ClientDTO implements Serializable{
 
 	private static final long serialVersionUID = 1L;
