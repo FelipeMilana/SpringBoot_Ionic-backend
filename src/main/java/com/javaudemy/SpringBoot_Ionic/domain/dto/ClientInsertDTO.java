@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import com.javaudemy.SpringBoot_Ionic.services.validations.InsertClient;
@@ -45,6 +46,7 @@ public class ClientInsertDTO implements Serializable{
 	@NotEmpty(message="Preenchimento obrigatório")
 	private String cep;
 	
+	@NotNull(message="Preenchimento obrigatório")
 	private Integer cityId;
 	
 	public ClientInsertDTO() {
