@@ -40,7 +40,7 @@ public class Client implements Serializable{
 	
 	@ElementCollection
 	@CollectionTable(name = "tb_Client_Telephones")
-	private Set<String> telephones = new HashSet<>();
+	private List<String> telephones = new ArrayList<>();
 	
 	@OneToMany(mappedBy = "client", cascade=CascadeType.ALL)
 	private Set<Adress> adresses = new HashSet<>();
@@ -92,7 +92,7 @@ public class Client implements Serializable{
 		this.cpfOrCnpj = cpfOrCnpj;
 	}
 
-	public Set<String> getTelephones() {
+	public List<String> getTelephones() {
 		return telephones;
 	}
 

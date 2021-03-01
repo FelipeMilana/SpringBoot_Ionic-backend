@@ -9,7 +9,7 @@ import javax.validation.constraints.Size;
 import com.javaudemy.SpringBoot_Ionic.services.validations.InsertClient;
 
 @InsertClient
-public class Client2DTO implements Serializable{
+public class ClientInsertDTO implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	
@@ -47,7 +47,7 @@ public class Client2DTO implements Serializable{
 	
 	private Integer cityId;
 	
-	public Client2DTO() {
+	public ClientInsertDTO() {
 	}
 
 	public String getName() {
@@ -152,7 +152,5 @@ public class Client2DTO implements Serializable{
 
 	public void setCityId(Integer cityId) {
 		this.cityId = cityId;
-	}
-	
-	
+	}	
 }

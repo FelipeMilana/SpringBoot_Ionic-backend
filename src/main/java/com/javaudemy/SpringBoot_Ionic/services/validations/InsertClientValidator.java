@@ -9,13 +9,13 @@ import javax.validation.ConstraintValidatorContext;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.javaudemy.SpringBoot_Ionic.domain.Client;
-import com.javaudemy.SpringBoot_Ionic.domain.dto.Client2DTO;
+import com.javaudemy.SpringBoot_Ionic.domain.dto.ClientInsertDTO;
 import com.javaudemy.SpringBoot_Ionic.domain.enums.ClientType;
 import com.javaudemy.SpringBoot_Ionic.repositories.ClientRepository;
 import com.javaudemy.SpringBoot_Ionic.resources.exceptions.FieldMessage;
 import com.javaudemy.SpringBoot_Ionic.services.validations.utils.BR;
 
-public class InsertClientValidator implements ConstraintValidator<InsertClient, Client2DTO> {
+public class InsertClientValidator implements ConstraintValidator<InsertClient, ClientInsertDTO> {
 	
 	@Autowired
 	private ClientRepository clientRepository;
@@ -26,7 +26,7 @@ public class InsertClientValidator implements ConstraintValidator<InsertClient, 
 	}
 
 	@Override
-	public boolean isValid(Client2DTO objDTO, ConstraintValidatorContext context) {
+	public boolean isValid(ClientInsertDTO objDTO, ConstraintValidatorContext context) {
 		List<FieldMessage> list = new ArrayList<>();
 		
 		if(objDTO.getType().equals(ClientType.PESSOAFISICA.getDescription()) && !BR.isValidCPF(objDTO.getCpfOrCnpj())) {

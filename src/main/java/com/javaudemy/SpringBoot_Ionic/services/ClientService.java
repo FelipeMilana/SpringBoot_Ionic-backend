@@ -13,8 +13,8 @@ import org.springframework.stereotype.Service;
 import com.javaudemy.SpringBoot_Ionic.domain.Adress;
 import com.javaudemy.SpringBoot_Ionic.domain.City;
 import com.javaudemy.SpringBoot_Ionic.domain.Client;
-import com.javaudemy.SpringBoot_Ionic.domain.dto.Client2DTO;
-import com.javaudemy.SpringBoot_Ionic.domain.dto.ClientDTO;
+import com.javaudemy.SpringBoot_Ionic.domain.dto.ClientInsertDTO;
+import com.javaudemy.SpringBoot_Ionic.domain.dto.ClientUpdateDTO;
 import com.javaudemy.SpringBoot_Ionic.domain.enums.ClientType;
 import com.javaudemy.SpringBoot_Ionic.repositories.CityRepository;
 import com.javaudemy.SpringBoot_Ionic.repositories.ClientRepository;
@@ -64,11 +64,17 @@ public class ClientService {
 		return repository.findAll(pageRequest);
 	}
 
-	public Client fromDTO(ClientDTO objDTO) {
-		return new Client(objDTO.getId(), objDTO.getName(), objDTO.getEmail(), null, null);
+	public Client fromDTO(ClientUpdateDTO objDTO) {
+		Client cli = new Client(null, objDTO.getName(), objDTO.getEmail(), null, null);
+		
+		cli.getTelephones().add(objDTO.getTelephone1());
+		cli.getTelephones().add(objDTO.getTelephone2());
+		cli.getTelephones().add(objDTO.getTelephone3());
+		
+		return cli;
 	}
 
-	public Client fromDTO(Client2DTO objDTO) {
+	public Client fromDTO(ClientInsertDTO objDTO) {
 		Client cli = new Client(null, objDTO.getName(), objDTO.getEmail(), objDTO.getCpfOrCnpj(),
 				ClientType.toStringEnum(objDTO.getType()));
 		
@@ -79,20 +85,37 @@ public class ClientService {
 						() -> new ObjectNotFoundException("Cidade não encontrada! Id: " + objDTO.getCityId())));
 		
 		cli.getAdresses().add(adress);
+		
 		cli.getTelephones().add(objDTO.getTelephone1());
-
-		if (objDTO.getTelephone2() != null) {
+		
+		if(objDTO.getTelephone2() != null) {
 			cli.getTelephones().add(objDTO.getTelephone2());
 		}
-		if (objDTO.getTelephone3() != null) {
+		if(objDTO.getTelephone3() != null) {
 			cli.getTelephones().add(objDTO.getTelephone3());
 		}
 		return cli;
 	}
 
 	private Client updating(Client oldObj, Client obj) {
-		oldObj.setName(obj.getName());
-		oldObj.setEmail(obj.getEmail());
+		if(obj.getName() != null) {
+			oldObj.setName(obj.getName());
+		}
+		
+		if(obj.getEmail() != null) {
+			oldObj.setEmail(obj.getEmail());
+		}
+			
+		for(int i =0; i< oldObj.getTelephones().size(); i++) {
+			if(obj.getTelephones().get(i) != null) {
+				oldObj.getTelephones().remove(i);
+				oldObj.getTelephones().add(i, obj.getTelephones().get(i));
+			}	
+		}
+		
+		for(int i = oldObj.getTelephones().size(); i<obj.getTelephones().size(); i++) {
+			oldObj.getTelephones().add(i, obj.getTelephones().get(i));
+		}		
 		return oldObj;
 	}
 }
