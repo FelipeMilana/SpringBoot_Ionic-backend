@@ -20,7 +20,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.javaudemy.SpringBoot_Ionic.domain.Adress;
 import com.javaudemy.SpringBoot_Ionic.domain.Client;
+import com.javaudemy.SpringBoot_Ionic.domain.dto.AdressInsertDTO;
+import com.javaudemy.SpringBoot_Ionic.domain.dto.AdressUpdateDTO;
 import com.javaudemy.SpringBoot_Ionic.domain.dto.ClientDTO;
 import com.javaudemy.SpringBoot_Ionic.domain.dto.ClientInsertDTO;
 import com.javaudemy.SpringBoot_Ionic.domain.dto.ClientUpdateDTO;
@@ -40,6 +43,12 @@ public class ClientResource {
 		return ResponseEntity.ok().body(listDTO);
 	}
 	
+	@GetMapping(value = "/{id}")
+	public ResponseEntity<Client> findById(@PathVariable Integer id) {
+		Client obj = service.findById(id);
+		return ResponseEntity.ok().body(obj);
+	}
+	
 	@GetMapping(value = "/page")
 	public ResponseEntity<Page<ClientDTO>> findPage(
 			@RequestParam(value = "page", defaultValue = "0") Integer page, 
@@ -52,13 +61,7 @@ public class ClientResource {
 		return ResponseEntity.ok().body(listDTO);
 	}
 	
-	@GetMapping(value = "/{id}")
-	public ResponseEntity<Client> findById(@PathVariable Integer id) {
-		Client obj = service.findById(id);
-		return ResponseEntity.ok().body(obj);
-	}
-	
-	@PostMapping
+	@PostMapping //201
 	public ResponseEntity<Void> insert(@Valid @RequestBody ClientInsertDTO objDTO) {
 		Client obj = service.fromDTO(objDTO);
 		obj =  service.insert(obj);
@@ -66,16 +69,38 @@ public class ClientResource {
 		return ResponseEntity.created(uri).build();
 	}
 	
-	@PutMapping(value = "/{id}")
+	@PostMapping(value = "/{id}/addAdress") //204
+	public ResponseEntity<Void> insertAdress(@Valid @RequestBody AdressInsertDTO objDTO, @PathVariable Integer id) {
+		Client obj = service.adressFromDTO(objDTO, id);
+		obj =  service.insert(obj);
+		return ResponseEntity.noContent().build();
+		
+	}
+	
+	@PutMapping(value = "/{id}") //204
 	public ResponseEntity<Void> update(@Valid @RequestBody ClientUpdateDTO objDTO, @PathVariable Integer id){
 		Client obj = service.fromDTO(objDTO);
 		obj = service.update(id, obj);
 		return ResponseEntity.noContent().build();
 	}
 	
-	@DeleteMapping(value = "/{id}")
+	@PutMapping(value = "/{id}/updateAdress/{adressId}") //204
+	public ResponseEntity<Client> updateAdress(@Valid @RequestBody AdressUpdateDTO objDTO, @PathVariable Integer id, @PathVariable Integer adressId) {
+		Adress adress = service.adressFromDTO(objDTO, adressId);
+		service.updateAdress(id, adress);
+		return ResponseEntity.noContent().build();
+		
+	}
+	
+	@DeleteMapping(value = "/{id}")  //204
 	public ResponseEntity<Void> delete(@PathVariable Integer id) {
 		service.delete(id);
+		return ResponseEntity.noContent().build();
+	}
+	
+	@DeleteMapping(value = "/{id}/deleteAdress/{adressId}") //204
+	public ResponseEntity<Void> delete(@PathVariable Integer id, @PathVariable Integer adressId) {
+		service.deleteAdress(id, adressId);
 		return ResponseEntity.noContent().build();
 	}
 	
