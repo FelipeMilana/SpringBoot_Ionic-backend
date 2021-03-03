@@ -26,6 +26,7 @@ public class ProductService {
 	@Autowired
 	public CategoryRepository catRepository;
 	
+	
 	public List<Product> findAll() {
 		return repository.findAll();
 	}
@@ -51,10 +52,11 @@ public class ProductService {
 		findById(id);
 		repository.deleteById(id);
 	}
-
-	public Page<Product> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
+	
+	public Page<Product> search(String name, List<Integer> ids, Integer page, Integer linesPerPage, String orderBy, String direction){
 		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
-		return repository.findAll(pageRequest);
+		List<Category> categories = catRepository.findAllById(ids);
+		return repository.findDistinctByNameContainingAndCategoriesIn(name, categories, pageRequest);
 	}
 
 	public Product fromDTO(ProductInsertDTO objDTO) {

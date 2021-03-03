@@ -3,6 +3,7 @@ package com.javaudemy.SpringBoot_Ionic.resources;
 import java.net.URI;
 import java.util.List;
 import java.util.Locale;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
@@ -20,9 +21,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.javaudemy.SpringBoot_Ionic.domain.Category;
 import com.javaudemy.SpringBoot_Ionic.domain.Product;
+import com.javaudemy.SpringBoot_Ionic.domain.dto.ProductDTO;
 import com.javaudemy.SpringBoot_Ionic.domain.dto.ProductInsertDTO;
 import com.javaudemy.SpringBoot_Ionic.domain.dto.ProductUpdateDTO;
+import com.javaudemy.SpringBoot_Ionic.resources.utils.URL;
+import com.javaudemy.SpringBoot_Ionic.services.CategoryService;
 import com.javaudemy.SpringBoot_Ionic.services.ProductService;
 
 @RestController
@@ -31,22 +36,32 @@ public class ProductResource {
 
 	@Autowired
 	private ProductService service;
+	@Autowired
+	private CategoryService catService;
 	
 	@GetMapping
-	public ResponseEntity<List<Product>> findAll() {
+	public ResponseEntity<List<ProductDTO>> findAll() {
 		List<Product> list = service.findAll();
-		return ResponseEntity.ok().body(list);
+		List<ProductDTO> listDTO = list.stream().map(obj -> new ProductDTO(obj)).collect(Collectors.toList());
+		return ResponseEntity.ok().body(listDTO);
 	}
-	
-	@GetMapping(value = "/page")
-	public ResponseEntity<Page<Product>> findPage(
+
+	@GetMapping(value = "/pageSearch")
+	public ResponseEntity<Page<ProductDTO>> searchPage(
+			@RequestParam(value = "name", defaultValue = "") String name,
+			@RequestParam(value = "categories", defaultValue = "All") String categories,
 			@RequestParam(value = "page", defaultValue = "0") Integer page, 
 			@RequestParam(value = "linesPerPage", defaultValue = "24") Integer linesPerPage, 
 			@RequestParam(value = "orderBy", defaultValue = "name") String orderBy, 
 			@RequestParam(value = "direction", defaultValue = "ASC") String direction) {
 		
-		Page<Product> list = service.findPage(page, linesPerPage, orderBy, direction);
-		return ResponseEntity.ok().body(list);
+		String decodedName = URL.decodeParam(name);
+		List<Category> cats = catService.findAll();
+		List<Integer> ids = URL.decodeIntList(categories, cats);
+		
+		Page<Product> list = service.search(decodedName, ids, page, linesPerPage, orderBy, direction);
+		Page<ProductDTO> listDTO = list.map(obj -> new ProductDTO(obj));
+		return ResponseEntity.ok().body(listDTO);
 	}
 	
 	@GetMapping(value = "/{id}")
