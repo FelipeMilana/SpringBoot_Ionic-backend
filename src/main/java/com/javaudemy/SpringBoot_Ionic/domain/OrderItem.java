@@ -35,6 +35,10 @@ public class OrderItem implements Serializable{
 		this.price = price;
 	}
 
+	public Double getSubTotal() {
+		return (price - discount) * quantity;
+	}
+	
 	@JsonIgnore
 	public Order getOrder() {
 		return id.getOrder();
@@ -75,7 +79,7 @@ public class OrderItem implements Serializable{
 	public void setPrice(Double price) {
 		this.price = price;
 	}
-
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
