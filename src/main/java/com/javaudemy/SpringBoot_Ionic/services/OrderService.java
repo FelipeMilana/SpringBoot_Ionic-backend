@@ -32,6 +32,8 @@ public class OrderService {
 	private ClientService clientService;
 	@Autowired
 	private AddressService adressService;
+	@Autowired
+	private EmailService emailService;
 	
 	public List<Order> findAll()	{
 		return repository.findAll();
@@ -45,6 +47,7 @@ public class OrderService {
 	
 	public Order insert(Order obj) {
 		obj = repository.save(obj);
+		emailService.sendOrderConfirmationEmail(obj);
 		return obj;
 	}
 	
