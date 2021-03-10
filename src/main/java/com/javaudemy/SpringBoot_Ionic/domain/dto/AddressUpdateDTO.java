@@ -2,28 +2,18 @@ package com.javaudemy.SpringBoot_Ionic.domain.dto;
 
 import java.io.Serializable;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-
-public class AdressInsertDTO implements Serializable{
+public class AddressUpdateDTO implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	
-	@NotEmpty(message="Preenchimento obrigatório")
 	private String street;
-	
-	@NotEmpty(message="Preenchimento obrigatório")
 	private String number;
 	private String complement;
 	private String district;
-	
-	@NotEmpty(message="Preenchimento obrigatório")
 	private String cep;
-	
-	@NotNull(message="Preenchimento obrigatório")
 	private Integer cityId;
 	
-	public AdressInsertDTO() {
+	public AddressUpdateDTO() {
 	}
 
 	public String getStreet() {

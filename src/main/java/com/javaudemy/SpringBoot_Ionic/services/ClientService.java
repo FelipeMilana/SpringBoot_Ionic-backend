@@ -10,16 +10,14 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
-import com.javaudemy.SpringBoot_Ionic.domain.Adress;
+import com.javaudemy.SpringBoot_Ionic.domain.Address;
 import com.javaudemy.SpringBoot_Ionic.domain.City;
 import com.javaudemy.SpringBoot_Ionic.domain.Client;
-import com.javaudemy.SpringBoot_Ionic.domain.dto.AdressInsertDTO;
-import com.javaudemy.SpringBoot_Ionic.domain.dto.AdressUpdateDTO;
+import com.javaudemy.SpringBoot_Ionic.domain.dto.AddressInsertDTO;
+import com.javaudemy.SpringBoot_Ionic.domain.dto.AddressUpdateDTO;
 import com.javaudemy.SpringBoot_Ionic.domain.dto.ClientInsertDTO;
 import com.javaudemy.SpringBoot_Ionic.domain.dto.ClientUpdateDTO;
 import com.javaudemy.SpringBoot_Ionic.domain.enums.ClientType;
-import com.javaudemy.SpringBoot_Ionic.repositories.AdressRepository;
-import com.javaudemy.SpringBoot_Ionic.repositories.CityRepository;
 import com.javaudemy.SpringBoot_Ionic.repositories.ClientRepository;
 import com.javaudemy.SpringBoot_Ionic.services.exceptions.DataIntegrityException;
 import com.javaudemy.SpringBoot_Ionic.services.exceptions.ObjectNotFoundException;
@@ -28,11 +26,11 @@ import com.javaudemy.SpringBoot_Ionic.services.exceptions.ObjectNotFoundExceptio
 public class ClientService {
 
 	@Autowired
-	public ClientRepository repository;
+	private ClientRepository repository;
 	@Autowired
-	public CityRepository cityRepository;
+	private CityService cityService;
 	@Autowired
-	public AdressRepository adressRepository;
+	private AddressService adressService;
 
 	public List<Client> findAll() {
 		return repository.findAll();
@@ -54,9 +52,9 @@ public class ClientService {
 		return repository.save(obj);
 	}
 	
-	public Client updateAdress(Integer id, Adress obj) {
+	public Client updateAddress(Integer id, Address obj) {
 		Client oldObj = findById(id);
-		oldObj = updatingAdress(oldObj, obj);
+		oldObj = updatingAddress(oldObj, obj);
 		return repository.save(oldObj);	
 	}
 
@@ -64,19 +62,20 @@ public class ClientService {
 		findById(id);
 		try {
 			repository.deleteById(id);
-		} catch (DataIntegrityViolationException e) {
+		} 
+		catch (DataIntegrityViolationException e) {
 			throw new DataIntegrityException("Não é possível excluir porque há pedidos relacionados");
 		}
 	}
 
-	public void deleteAdress(Integer id, Integer adressId) {
+	public void deleteAddress(Integer id, Integer adressId) {
 		Client cli = findById(id);
-		Optional<Adress> adress = adressRepository.findById(adressId);
+		Address adress = adressService.findById(adressId);
 		
-		if(cli.getAdresses().contains(adress.get())) {
-			cli.getAdresses().remove(adress.get());
+		if(cli.getAddresses().contains(adress)) {
+			cli.getAddresses().remove(adress);
 		}
-		adressRepository.deleteById(adressId);
+		adressService.delete(adressId);
 		
 	}
 	
@@ -99,13 +98,12 @@ public class ClientService {
 		Client cli = new Client(null, objDTO.getName(), objDTO.getEmail(), objDTO.getCpfOrCnpj(),
 				ClientType.toStringEnum(objDTO.getType()));
 		
-		Optional<City> city = cityRepository.findById(objDTO.getCityId());
+		City city = cityService.findById(objDTO.getCityId());
 		
-		Adress adress = new Adress(null, objDTO.getStreet(), objDTO.getNumber(), objDTO.getComplement(),
-				objDTO.getDistrict(), objDTO.getCep(), cli, city.orElseThrow(
-						() -> new ObjectNotFoundException("Cidade não encontrada! Id: " + objDTO.getCityId())));
+		Address adress = new Address(null, objDTO.getStreet(), objDTO.getNumber(), objDTO.getComplement(),
+				objDTO.getDistrict(), objDTO.getCep(), cli, city);
 		
-		cli.getAdresses().add(adress);
+		cli.getAddresses().add(adress);
 		
 		cli.getTelephones().add(objDTO.getTelephone1());
 		
@@ -118,29 +116,28 @@ public class ClientService {
 		return cli;
 	}
 	
-	public Client adressFromDTO(AdressInsertDTO objDTO, Integer id) {
+	public Client adressFromDTO(AddressInsertDTO objDTO, Integer id) {
 		Client cli = findById(id);
-		Optional<City> city = cityRepository.findById(objDTO.getCityId());
+		City city = cityService.findById(objDTO.getCityId());
 		
-		Adress adress = new Adress(null, objDTO.getStreet(), objDTO.getNumber(), objDTO.getComplement(), objDTO.getDistrict(), 
-				objDTO.getCep(), cli,city.orElseThrow(
-						() -> new ObjectNotFoundException("Cidade não encontrada! Id: " + objDTO.getCityId())));
+		Address adress = new Address(null, objDTO.getStreet(), objDTO.getNumber(), objDTO.getComplement(), objDTO.getDistrict(), 
+				objDTO.getCep(), cli,city);
 		
-		cli.getAdresses().add(adress);
+		cli.getAddresses().add(adress);
 		return cli;
 	}
 	
-	public Adress adressFromDTO(AdressUpdateDTO objDTO, Integer adressId) {
-		Optional<City> city = cityRepository.findById(objDTO.getCityId());
+	public Address adressFromDTO(AddressUpdateDTO objDTO, Integer adressId) {
+		City  city = cityService.findById(objDTO.getCityId());
 		
-		Adress adress = new Adress(adressId, objDTO.getStreet(), objDTO.getNumber(), objDTO.getComplement(), objDTO.getDistrict(), 
-				objDTO.getCep(), null,city.orElseThrow(
-						() -> new ObjectNotFoundException("Cidade não encontrada! Id: " + objDTO.getCityId())));
+		Address adress = new Address(adressId, objDTO.getStreet(), objDTO.getNumber(), objDTO.getComplement(), objDTO.getDistrict(), 
+				objDTO.getCep(), null,city);
+		
 		return adress;
 	}
 	
-	private Client updatingAdress(Client oldObj, Adress obj) {
-		for (Adress adress: oldObj.getAdresses()) {
+	private Client updatingAddress(Client oldObj, Address obj) {
+		for (Address adress: oldObj.getAddresses()) {
 			if(adress.getId().equals(obj.getId())) {
 				if(obj.getStreet()!= null) {
 					adress.setStreet(obj.getStreet());

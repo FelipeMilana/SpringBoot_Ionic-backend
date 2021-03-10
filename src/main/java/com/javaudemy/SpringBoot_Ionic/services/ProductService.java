@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
@@ -16,15 +17,16 @@ import com.javaudemy.SpringBoot_Ionic.domain.dto.ProductInsertDTO;
 import com.javaudemy.SpringBoot_Ionic.domain.dto.ProductUpdateDTO;
 import com.javaudemy.SpringBoot_Ionic.repositories.CategoryRepository;
 import com.javaudemy.SpringBoot_Ionic.repositories.ProductRepository;
+import com.javaudemy.SpringBoot_Ionic.services.exceptions.DataIntegrityException;
 import com.javaudemy.SpringBoot_Ionic.services.exceptions.ObjectNotFoundException;
 
 @Service
 public class ProductService {
 
 	@Autowired
-	public ProductRepository repository;
+	private ProductRepository repository;
 	@Autowired
-	public CategoryRepository catRepository;
+	private CategoryRepository catRepository;
 	
 	
 	public List<Product> findAll() {
@@ -50,7 +52,12 @@ public class ProductService {
 
 	public void delete(Integer id) {
 		findById(id);
-		repository.deleteById(id);
+		try {
+			repository.deleteById(id);
+		}
+		catch(DataIntegrityViolationException e) {
+			throw new DataIntegrityException("Não é possível excluir um produto que está presente em um item de pedido");
+		}
 	}
 	
 	public Page<Product> search(String name, List<Integer> ids, Integer page, Integer linesPerPage, String orderBy, String direction){
@@ -65,13 +72,14 @@ public class ProductService {
 		for (CategoryDTO cat : objDTO.getCategoryName()) {
 			Category category = catRepository.findByName(cat.getName());
 			if (category != null) {
-				prod.getCategories().add(category);
 				category.getProducts().add(prod);
+				prod.getCategories().add(category);
 			}
 		}
+		
 		return prod;
 	}
-
+	
 	public Product fromDTO(ProductUpdateDTO objDTO) {
 		Product prod = new Product(null, objDTO.getName(), objDTO.getPrice());
 

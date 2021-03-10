@@ -40,23 +40,23 @@ public class Order implements Serializable{
 	private Client client;
 	
 	@ManyToOne
-	@JoinColumn(name = "deliveryAdress_id")
-	private Adress deliveryAdress;
+	@JoinColumn(name = "deliveryAddress_id")
+	private Address deliveryAddress;
 	
 	@OneToOne(mappedBy = "order", cascade=CascadeType.ALL)
 	private Payment payment;
 	
-	@OneToMany(mappedBy = "id.order")
+	@OneToMany(mappedBy = "id.order", cascade=CascadeType.PERSIST)
 	private Set<OrderItem> items = new HashSet<>();
 	
 	public Order() {
 	}
 	
-	public Order(Integer id, Date instant, Client client, Adress deliveryAdress) {
+	public Order(Integer id, Date instant, Client client, Address deliveryAddress) {
 		this.id = id;
 		this.instant = instant; 
 		this.client = client;
-		this.deliveryAdress = deliveryAdress;
+		this.deliveryAddress = deliveryAddress;
 	}
 	
 
@@ -96,12 +96,12 @@ public class Order implements Serializable{
 		this.client = client;
 	}
 
-	public Adress getDeliveryAdress() {
-		return deliveryAdress;
+	public Address getDeliveryAddress() {
+		return deliveryAddress;
 	}
 
-	public void setDeliveryAdress(Adress deliveryAdress) {
-		this.deliveryAdress = deliveryAdress;
+	public void setDeliveryAddress(Address deliveryAddress) {
+		this.deliveryAddress = deliveryAddress;
 	}
 	
 	public Set<OrderItem> getItems() {
@@ -132,4 +132,8 @@ public class Order implements Serializable{
 			return false;
 		return true;
 	}
+
+	
+	
+	
 }

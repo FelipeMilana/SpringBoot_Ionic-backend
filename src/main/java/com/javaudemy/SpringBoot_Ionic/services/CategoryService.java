@@ -20,7 +20,7 @@ import com.javaudemy.SpringBoot_Ionic.services.exceptions.ObjectNotFoundExceptio
 public class CategoryService {
 
 	@Autowired
-	public CategoryRepository repository;
+	private CategoryRepository repository;
 	
 	public List<Category> findAll()	{
 		return repository.findAll();

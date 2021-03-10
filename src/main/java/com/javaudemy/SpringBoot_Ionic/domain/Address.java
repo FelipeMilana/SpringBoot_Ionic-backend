@@ -13,8 +13,8 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-@Table(name = "tb_adress")
-public class Adress implements Serializable{
+@Table(name = "tb_address")
+public class Address implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 
@@ -37,10 +37,10 @@ public class Adress implements Serializable{
 	@JoinColumn(name = "city_id")
 	private City city;
 	
-	public Adress() {
+	public Address() {
 	}
 
-	public Adress(Integer id, String street, String number, String complement, String district, String cep,
+	public Address(Integer id, String street, String number, String complement, String district, String cep,
 			Client client, City city) {
 		this.id = id;
 		this.street = street;
@@ -132,7 +132,7 @@ public class Adress implements Serializable{
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Adress other = (Adress) obj;
+		Address other = (Address) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;

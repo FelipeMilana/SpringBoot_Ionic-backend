@@ -43,7 +43,7 @@ public class Client implements Serializable{
 	private List<String> telephones = new ArrayList<>();
 	
 	@OneToMany(mappedBy = "client", cascade=CascadeType.ALL)
-	private Set<Adress> adresses = new HashSet<>();
+	private Set<Address> addresses = new HashSet<>();
 	
 	@JsonIgnore
 	@OneToMany(mappedBy = "client")
@@ -104,8 +104,8 @@ public class Client implements Serializable{
 		this.type = type.getDescription();
 	}
 
-	public Set<Adress> getAdresses() {
-		return adresses;
+	public Set<Address> getAddresses() {
+		return addresses;
 	}
 	
 
