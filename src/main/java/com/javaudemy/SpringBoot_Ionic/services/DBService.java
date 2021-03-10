@@ -1,14 +1,13 @@
-package com.javaudemy.SpringBoot_Ionic.config;
+package com.javaudemy.SpringBoot_Ionic.services;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Service;
 
-import com.javaudemy.SpringBoot_Ionic.domain.Adress;
+import com.javaudemy.SpringBoot_Ionic.domain.Address;
 import com.javaudemy.SpringBoot_Ionic.domain.CardPayment;
 import com.javaudemy.SpringBoot_Ionic.domain.Category;
 import com.javaudemy.SpringBoot_Ionic.domain.City;
@@ -21,7 +20,7 @@ import com.javaudemy.SpringBoot_Ionic.domain.SlipPayment;
 import com.javaudemy.SpringBoot_Ionic.domain.State;
 import com.javaudemy.SpringBoot_Ionic.domain.enums.ClientType;
 import com.javaudemy.SpringBoot_Ionic.domain.enums.PaymentState;
-import com.javaudemy.SpringBoot_Ionic.repositories.AdressRepository;
+import com.javaudemy.SpringBoot_Ionic.repositories.AddressRepository;
 import com.javaudemy.SpringBoot_Ionic.repositories.CategoryRepository;
 import com.javaudemy.SpringBoot_Ionic.repositories.CityRepository;
 import com.javaudemy.SpringBoot_Ionic.repositories.ClientRepository;
@@ -31,10 +30,9 @@ import com.javaudemy.SpringBoot_Ionic.repositories.PaymentRepository;
 import com.javaudemy.SpringBoot_Ionic.repositories.ProductRepository;
 import com.javaudemy.SpringBoot_Ionic.repositories.StateRepository;
 
-@Configuration
-@Profile("test")
-public class Instantiation implements CommandLineRunner {
-
+@Service
+public class DBService {
+	
 	@Autowired
 	private CategoryRepository catRepository;
 	@Autowired
@@ -46,7 +44,7 @@ public class Instantiation implements CommandLineRunner {
 	@Autowired
 	private ClientRepository clientRepository;
 	@Autowired
-	private AdressRepository adressRepository;
+	private AddressRepository adressRepository;
 	@Autowired
 	private OrderRepository orderRepository;
 	@Autowired
@@ -54,8 +52,7 @@ public class Instantiation implements CommandLineRunner {
 	@Autowired
 	private OrderItemRepository orderItemRepository;
 	
-	@Override
-	public void run(String... args) throws Exception {
+	public void instantiateDatabase() throws ParseException {
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 		
@@ -66,6 +63,7 @@ public class Instantiation implements CommandLineRunner {
 		Category cat5 = new Category(null, "Jardinagem");
 		Category cat6 = new Category(null, "Decoração");
 		Category cat7 = new Category(null, "Perfumaria");
+		
 		
 		
 		Product p1 = new Product(null, "Computador", 2000.00);
@@ -120,14 +118,14 @@ public class Instantiation implements CommandLineRunner {
 		stateRepository.saveAll(Arrays.asList(s1, s2));
 		cityRepository.saveAll(Arrays.asList(c1, c2, c3));
 		
-		Client cli1 = new Client(null, "Maria Silva", "maria@gmail.com", "36378912377", ClientType.PESSOAFISICA);
+		Client cli1 = new Client(null, "Maria Silva", "pedroaugs15@gmail.com", "36378912377", ClientType.PESSOAFISICA);
 		
 		cli1.getTelephones().addAll(Arrays.asList("27363323", "93836393"));
 		
-		Adress ad1 = new Adress(null, "Rua Flores", "300", "Apto 203", "Jardim", "38220834", cli1, c1);
-		Adress ad2 = new Adress(null, "Avenida Matos", "105", "Sala 800", "Centro", "38777012", cli1, c2);
+		Address ad1 = new Address(null, "Rua Flores", "300", "Apto 203", "Jardim", "38220834", cli1, c1);
+		Address ad2 = new Address(null, "Avenida Matos", "105", "Sala 800", "Centro", "38777012", cli1, c2);
 		
-		cli1.getAdresses().addAll(Arrays.asList(ad1, ad2));
+		cli1.getAddresses().addAll(Arrays.asList(ad1, ad2));
 		
 		clientRepository.saveAll(Arrays.asList(cli1));
 		adressRepository.saveAll(Arrays.asList(ad1, ad2));
