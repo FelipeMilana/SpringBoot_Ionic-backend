@@ -47,7 +47,7 @@ public class OrderService {
 	
 	public Order insert(Order obj) {
 		obj = repository.save(obj);
-		emailService.sendOrderConfirmationEmail(obj);
+		emailService.sendOrderConfirmationEmailHtml(obj);
 		return obj;
 	}
 	
