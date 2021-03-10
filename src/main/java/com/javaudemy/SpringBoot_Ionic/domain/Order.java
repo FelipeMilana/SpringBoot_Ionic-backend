@@ -1,8 +1,11 @@
 package com.javaudemy.SpringBoot_Ionic.domain;
 
 import java.io.Serializable;
+import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -133,7 +136,28 @@ public class Order implements Serializable{
 		return true;
 	}
 
-	
-	
-	
+	@Override
+	public String toString() {
+		NumberFormat nf =  NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
+		SimpleDateFormat sdf  =  new SimpleDateFormat("dd/MM/yyyy HH:mm");
+		
+		StringBuilder builder = new StringBuilder();
+		builder.append("Número de Pedido: ");
+		builder.append(getId());
+		builder.append("\nInstante: ");
+		builder.append(sdf.format(getInstant()));
+		builder.append("\nCliente: ");
+		builder.append(getClient().getName());
+		builder.append("\nSituação do pagamento: ");
+		builder.append(getPayment().getState().getDescription());
+		builder.append("\nDetalhes:\n\n");
+		
+		for(OrderItem oi: getItems()) {
+			builder.append(oi.toString());
+		}
+		
+		builder.append("\nValor total: ");
+		builder.append(nf.format(getTotal()));
+		return builder.toString();
+	}
 }
