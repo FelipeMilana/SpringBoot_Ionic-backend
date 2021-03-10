@@ -11,6 +11,7 @@ import com.javaudemy.SpringBoot_Ionic.services.DBService;
 import com.javaudemy.SpringBoot_Ionic.services.EmailService;
 import com.javaudemy.SpringBoot_Ionic.services.MockEmailService;
 
+
 @Configuration
 @Profile("test")
 public class TestConfig  {

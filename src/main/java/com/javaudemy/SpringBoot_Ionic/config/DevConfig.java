@@ -15,6 +15,7 @@ import com.javaudemy.SpringBoot_Ionic.services.DBService;
 import com.javaudemy.SpringBoot_Ionic.services.EmailService;
 import com.javaudemy.SpringBoot_Ionic.services.SmtpEmailService;
 
+
 @Configuration
 @Profile("dev")
 public class DevConfig  {
