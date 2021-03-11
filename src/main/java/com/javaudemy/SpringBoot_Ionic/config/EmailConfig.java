@@ -4,25 +4,14 @@ import java.util.Properties;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 
-import com.javaudemy.SpringBoot_Ionic.services.EmailService;
-import com.javaudemy.SpringBoot_Ionic.services.SmtpEmailService;
-
-
 @Configuration
-@Profile("prod")
-public class ProdConfig  {
-	
+public class EmailConfig {
+
 	@Bean
-	public EmailService emailService() {
-		return new SmtpEmailService();
-	}
-	
-	@Bean
-	public JavaMailSender getMailHtmlConfigs() {
+	public JavaMailSender getMailConfigs() {
 		JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
 		mailSender.setHost("smtp.gmail.com");
 		mailSender.setUsername(System.getenv().get("USERNAME_EMAIL"));
