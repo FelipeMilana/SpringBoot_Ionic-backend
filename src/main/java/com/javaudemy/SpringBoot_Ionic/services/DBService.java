@@ -21,6 +21,7 @@ import com.javaudemy.SpringBoot_Ionic.domain.SlipPayment;
 import com.javaudemy.SpringBoot_Ionic.domain.State;
 import com.javaudemy.SpringBoot_Ionic.domain.enums.ClientType;
 import com.javaudemy.SpringBoot_Ionic.domain.enums.PaymentState;
+import com.javaudemy.SpringBoot_Ionic.domain.enums.Profile;
 import com.javaudemy.SpringBoot_Ionic.repositories.AddressRepository;
 import com.javaudemy.SpringBoot_Ionic.repositories.CategoryRepository;
 import com.javaudemy.SpringBoot_Ionic.repositories.CityRepository;
@@ -122,16 +123,21 @@ public class DBService {
 		cityRepository.saveAll(Arrays.asList(c1, c2, c3));
 		
 		Client cli1 = new Client(null, "Maria Silva", "pedroaugs15@gmail.com", "36378912377", ClientType.PESSOAFISICA, encoder.encode("123"));
-		
 		cli1.getTelephones().addAll(Arrays.asList("27363323", "93836393"));
+		
+		Client cli2 = new Client(null, "Ana Costa", "games.clorin@gmail.com", "87325165099", ClientType.PESSOAFISICA, encoder.encode("456"));
+		cli2.addProfile(Profile.ADMIN);
+		cli2.getTelephones().addAll(Arrays.asList("978884653", "654456457"));
 		
 		Address ad1 = new Address(null, "Rua Flores", "300", "Apto 203", "Jardim", "38220834", cli1, c1);
 		Address ad2 = new Address(null, "Avenida Matos", "105", "Sala 800", "Centro", "38777012", cli1, c2);
+		Address ad3 = new Address(null, "Av. Floriano", "2106", null, "centro", "281777012", cli2, c2);
 		
 		cli1.getAddresses().addAll(Arrays.asList(ad1, ad2));
+		cli2.getAddresses().addAll(Arrays.asList(ad3));
 		
-		clientRepository.saveAll(Arrays.asList(cli1));
-		adressRepository.saveAll(Arrays.asList(ad1, ad2));
+		clientRepository.saveAll(Arrays.asList(cli1, cli2));
+		adressRepository.saveAll(Arrays.asList(ad1, ad2, ad3));
 		
 		Order o1 = new Order(null, sdf.parse("30/09/2017 10:32"), cli1, ad1);
 		Order o2 = new Order(null, sdf.parse("10/10/2017 19:35"), cli1, ad2);

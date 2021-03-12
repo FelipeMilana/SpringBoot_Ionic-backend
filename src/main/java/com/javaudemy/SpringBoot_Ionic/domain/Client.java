@@ -5,12 +5,14 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -19,6 +21,7 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.javaudemy.SpringBoot_Ionic.domain.enums.ClientType;
+import com.javaudemy.SpringBoot_Ionic.domain.enums.Profile;
 
 @Entity
 @Table(name = "tb_client")
@@ -44,6 +47,10 @@ public class Client implements Serializable{
 	@CollectionTable(name = "tb_Client_Telephones")
 	private List<String> telephones = new ArrayList<>();
 	
+	@ElementCollection(fetch=FetchType.EAGER)
+	@CollectionTable(name = "tb_Client_Profiles")
+	private Set<String> profiles = new HashSet<>();
+	
 	@OneToMany(mappedBy = "client", cascade=CascadeType.ALL)
 	private Set<Address> addresses = new HashSet<>();
 	
@@ -52,6 +59,7 @@ public class Client implements Serializable{
 	private List<Order> orders = new ArrayList<>();
 	
 	public Client() {
+		addProfile(Profile.CLIENT);
 	}
 
 	public Client(Integer id, String name, String email, String cpfOrCnpj, ClientType type, String password) {
@@ -61,6 +69,7 @@ public class Client implements Serializable{
 		this.cpfOrCnpj = cpfOrCnpj;
 		this.type = (type==null) ? null : type.getDescription();
 		this.password = password;
+		addProfile(Profile.CLIENT);
 	}
 
 	public Integer getId() {
@@ -107,6 +116,14 @@ public class Client implements Serializable{
 		return telephones;
 	}
 
+	public Set<Profile> getProfiles(){
+		return profiles.stream().map(x -> Profile.toStringEnum(x)).collect(Collectors.toSet());
+	}
+	
+	public void addProfile(Profile profile) {
+		profiles.add(profile.getDescription());
+	}
+	
 	public ClientType getType() {
 		return ClientType.toStringEnum(type);
 	}
