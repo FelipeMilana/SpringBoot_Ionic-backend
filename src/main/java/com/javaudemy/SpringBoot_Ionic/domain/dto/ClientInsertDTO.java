@@ -30,6 +30,9 @@ public class ClientInsertDTO implements Serializable{
 	private String type;
 	
 	@NotEmpty(message="Preenchimento obrigatório")
+	private String password;
+	
+	@NotEmpty(message="Preenchimento obrigatório")
 	private String telephone1;
 	private String telephone2;
 	private String telephone3;
@@ -82,6 +85,14 @@ public class ClientInsertDTO implements Serializable{
 
 	public void setType(String type) {
 		this.type = type;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 	public String getTelephone1() {

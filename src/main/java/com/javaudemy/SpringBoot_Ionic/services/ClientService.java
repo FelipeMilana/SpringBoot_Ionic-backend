@@ -8,6 +8,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.javaudemy.SpringBoot_Ionic.domain.Address;
@@ -31,6 +32,8 @@ public class ClientService {
 	private CityService cityService;
 	@Autowired
 	private AddressService adressService;
+	@Autowired
+	private BCryptPasswordEncoder encoder;
 
 	public List<Client> findAll() {
 		return repository.findAll();
@@ -85,7 +88,7 @@ public class ClientService {
 	}
 
 	public Client fromDTO(ClientUpdateDTO objDTO) {
-		Client cli = new Client(null, objDTO.getName(), objDTO.getEmail(), null, null);
+		Client cli = new Client(null, objDTO.getName(), objDTO.getEmail(), null, null, null);
 		
 		cli.getTelephones().add(objDTO.getTelephone1());
 		cli.getTelephones().add(objDTO.getTelephone2());
@@ -96,7 +99,7 @@ public class ClientService {
 
 	public Client fromDTO(ClientInsertDTO objDTO) {
 		Client cli = new Client(null, objDTO.getName(), objDTO.getEmail(), objDTO.getCpfOrCnpj(),
-				ClientType.toStringEnum(objDTO.getType()));
+				ClientType.toStringEnum(objDTO.getType()), encoder.encode(objDTO.getPassword()));
 		
 		City city = cityService.findById(objDTO.getCityId());
 		

@@ -35,8 +35,10 @@ public class Client implements Serializable{
 	private String email;
 	private String cpfOrCnpj;
 	
-	//associations
 	private String type;
+	
+	@JsonIgnore
+	private String password;
 	
 	@ElementCollection
 	@CollectionTable(name = "tb_Client_Telephones")
@@ -52,12 +54,13 @@ public class Client implements Serializable{
 	public Client() {
 	}
 
-	public Client(Integer id, String name, String email, String cpfOrCnpj, ClientType type) {
+	public Client(Integer id, String name, String email, String cpfOrCnpj, ClientType type, String password) {
 		this.id = id;
 		this.name = name;
 		this.email = email;
 		this.cpfOrCnpj = cpfOrCnpj;
 		this.type = (type==null) ? null : type.getDescription();
+		this.password = password;
 	}
 
 	public Integer getId() {
@@ -91,6 +94,14 @@ public class Client implements Serializable{
 	public void setCpfOrCnpj(String cpfOrCnpj) {
 		this.cpfOrCnpj = cpfOrCnpj;
 	}
+	
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
 
 	public List<String> getTelephones() {
 		return telephones;
@@ -103,6 +114,7 @@ public class Client implements Serializable{
 	public void setType(ClientType type) {
 		this.type = type.getDescription();
 	}
+	
 
 	public Set<Address> getAddresses() {
 		return addresses;
