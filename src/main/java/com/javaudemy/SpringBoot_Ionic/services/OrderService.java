@@ -5,6 +5,9 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import com.javaudemy.SpringBoot_Ionic.domain.Address;
@@ -16,7 +19,10 @@ import com.javaudemy.SpringBoot_Ionic.domain.SlipPayment;
 import com.javaudemy.SpringBoot_Ionic.domain.dto.OrderInsertDTO;
 import com.javaudemy.SpringBoot_Ionic.domain.dto.OrderItemDTO;
 import com.javaudemy.SpringBoot_Ionic.domain.enums.PaymentState;
+import com.javaudemy.SpringBoot_Ionic.domain.enums.Profile;
 import com.javaudemy.SpringBoot_Ionic.repositories.OrderRepository;
+import com.javaudemy.SpringBoot_Ionic.security.UserSS;
+import com.javaudemy.SpringBoot_Ionic.services.exceptions.AuthorizationException;
 import com.javaudemy.SpringBoot_Ionic.services.exceptions.ObjectNotFoundException;
 
 @Service
@@ -40,9 +46,18 @@ public class OrderService {
 	}
 	
 	public Order findById(Integer id) {
+		UserSS user = UserService.authenticatedUser();
+		Client cli = clientService.findById(user.getId());
+		
 		Optional<Order> obj = repository.findById(id);
-		return obj.orElseThrow(() -> new ObjectNotFoundException(
-				"Objeto não encontrado! Id: " + id + ", Tipo: " + Order.class.getName()));
+		Order order =  obj.orElseThrow(() 
+				-> new ObjectNotFoundException("Objeto não encontrado! Id: " + id + ", Tipo: " + Order.class.getName()));
+		
+		if(user == null || (!user.hasRole(Profile.ADMIN) && !cli.getOrders().contains(order))){
+			throw new AuthorizationException("Acesso negado");
+		}
+		
+		return order;
 	}
 	
 	public Order insert(Order obj) {
@@ -52,7 +67,13 @@ public class OrderService {
 	}
 	
 	public Order fromDTO(OrderInsertDTO objDTO) {
+		UserSS user = UserService.authenticatedUser();
 		Client client = clientService.findById(objDTO.getClientId());
+		
+		if(user == null || (!user.hasRole(Profile.ADMIN) && !user.getId().equals(client.getId()))) {
+			throw new AuthorizationException("Acesso negado");
+		}
+		
 		Address adress = adressService.findById(objDTO.getDeliveryAddressId());
 		
 		if(!client.getAddresses().contains(adress)) {
@@ -77,5 +98,18 @@ public class OrderService {
 		}
 		
 		return order;
+	}
+	
+	public Page<Order> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
+		UserSS user = UserService.authenticatedUser();
+		
+		if(user == null) {
+			throw new AuthorizationException("Acesso negado");
+		}
+		
+		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
+		Client client = clientService.findById(user.getId());
+		return repository.findByClient(client, pageRequest);
+		
 	}
 }
