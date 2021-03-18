@@ -69,4 +69,7 @@ public class UserSS implements UserDetails{
 		return true;
 	}
 
+	public boolean hasRole(Profile profile) {
+		return authorities.contains(new SimpleGrantedAuthority(profile.getDescription()));
+	}
 }
