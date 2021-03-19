@@ -22,6 +22,8 @@ public class ClientUpdateDTO implements Serializable{
 	private String telephone2;
 	private String telephone3;
 	
+	private String password;
+	
 	public ClientUpdateDTO() {
 	}
 
@@ -63,5 +65,13 @@ public class ClientUpdateDTO implements Serializable{
 
 	public void setTelephone3(String telephone3) {
 		this.telephone3 = telephone3;
+	}
+	
+	public String getPassword() {
+		return password;
+	}
+	
+	public void setPassword(String password) {
+		this.password = password;
 	}
 }

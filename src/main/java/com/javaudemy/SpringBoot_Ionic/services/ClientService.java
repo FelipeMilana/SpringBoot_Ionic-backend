@@ -96,7 +96,7 @@ public class ClientService {
 	}
 
 	public Client fromDTO(ClientUpdateDTO objDTO) {
-		Client cli = new Client(null, objDTO.getName(), objDTO.getEmail(), null, null, null);
+		Client cli = new Client(null, objDTO.getName(), objDTO.getEmail(), null, null, objDTO.getPassword());
 
 		cli.getTelephones().add(objDTO.getTelephone1());
 		cli.getTelephones().add(objDTO.getTelephone2());
@@ -191,6 +191,10 @@ public class ClientService {
 
 		for (int i = oldObj.getTelephones().size(); i < obj.getTelephones().size(); i++) {
 			oldObj.getTelephones().add(i, obj.getTelephones().get(i));
+		}
+		
+		if(obj.getPassword() != null) {
+			oldObj.setPassword(encoder.encode(obj.getPassword()));
 		}
 		return oldObj;
 	}
