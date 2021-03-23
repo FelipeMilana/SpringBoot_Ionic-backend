@@ -12,8 +12,10 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import com.dropbox.core.v2.files.UploadErrorException;
 import com.javaudemy.SpringBoot_Ionic.services.exceptions.AuthorizationException;
 import com.javaudemy.SpringBoot_Ionic.services.exceptions.DataIntegrityException;
+import com.javaudemy.SpringBoot_Ionic.services.exceptions.FileException;
 import com.javaudemy.SpringBoot_Ionic.services.exceptions.ObjectNotFoundException;
 
 @ControllerAdvice
@@ -28,7 +30,7 @@ public class ResourceExceptionHandler {
 	}
 	
 	@ExceptionHandler(DataIntegrityException.class)
-	public ResponseEntity<StandardError> DataIntegrity(DataIntegrityException e, HttpServletRequest request) {
+	public ResponseEntity<StandardError> dataIntegrity(DataIntegrityException e, HttpServletRequest request) {
 		HttpStatus status = HttpStatus.BAD_REQUEST;
 		StandardError err = new StandardError(Instant.now(), status.value(), status.getReasonPhrase(), 
 				e.getClass().getName(), e.getMessage(), request.getRequestURI());
@@ -48,7 +50,7 @@ public class ResourceExceptionHandler {
 	}
 	
 	@ExceptionHandler(AccessDeniedException.class)
-	public ResponseEntity<StandardError> AccessDenied(AccessDeniedException e, HttpServletRequest request) {
+	public ResponseEntity<StandardError> accessDenied(AccessDeniedException e, HttpServletRequest request) {
 		HttpStatus status = HttpStatus.FORBIDDEN;
 		StandardError err = new StandardError(Instant.now(), status.value(), status.getReasonPhrase(), 
 				e.getClass().getName(), e.getMessage(), request.getRequestURI());
@@ -56,8 +58,24 @@ public class ResourceExceptionHandler {
 	}
 	
 	@ExceptionHandler(AuthorizationException.class)
-	public ResponseEntity<StandardError> Authorization(AuthorizationException e, HttpServletRequest request) {
+	public ResponseEntity<StandardError> authorization(AuthorizationException e, HttpServletRequest request) {
 		HttpStatus status = HttpStatus.FORBIDDEN;
+		StandardError err = new StandardError(Instant.now(), status.value(), status.getReasonPhrase(), 
+												e.getClass().getName(), e.getMessage(), request.getRequestURI());
+		return ResponseEntity.status(status).body(err);
+	}
+	
+	@ExceptionHandler(FileException.class)
+	public ResponseEntity<StandardError> file(FileException e, HttpServletRequest request) {
+		HttpStatus status = HttpStatus.BAD_REQUEST;
+		StandardError err = new StandardError(Instant.now(), status.value(), status.getReasonPhrase(), 
+												e.getClass().getName(), e.getMessage(), request.getRequestURI());
+		return ResponseEntity.status(status).body(err);
+	}
+	
+	@ExceptionHandler(UploadErrorException.class)
+	public ResponseEntity<StandardError> Authorization(UploadErrorException e, HttpServletRequest request) {
+		HttpStatus status = HttpStatus.BAD_REQUEST;
 		StandardError err = new StandardError(Instant.now(), status.value(), status.getReasonPhrase(), 
 												e.getClass().getName(), e.getMessage(), request.getRequestURI());
 		return ResponseEntity.status(status).body(err);

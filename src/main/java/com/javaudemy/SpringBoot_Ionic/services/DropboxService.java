@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.dropbox.core.DbxException;
 import com.dropbox.core.v2.DbxClientV2;
 import com.dropbox.core.v2.files.FileMetadata;
+import com.javaudemy.SpringBoot_Ionic.services.exceptions.FileException;
 
 @Service
 public class DropboxService {
@@ -36,13 +37,13 @@ public class DropboxService {
 		}
 		
 		catch (IOException e) {
-			throw new RuntimeException();
+			throw new FileException("Erro de IO: " + e.getMessage());
 		}  
 		catch (DbxException e) {
-			throw new RuntimeException();
+			throw new FileException("Erro de Dbx: " + e.getMessage());
 		} 
 		catch (URISyntaxException e) {
-			throw new RuntimeException();
+			throw new FileException("Erro de URISyntax: " + e.getMessage());
 		}
 	}
 }
