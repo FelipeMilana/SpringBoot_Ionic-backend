@@ -10,6 +10,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.javaudemy.SpringBoot_Ionic.domain.Address;
 import com.javaudemy.SpringBoot_Ionic.domain.City;
@@ -37,6 +38,8 @@ public class ClientService {
 	private AddressService adressService;
 	@Autowired
 	private BCryptPasswordEncoder encoder;
+	@Autowired
+	private DropboxService dropboxService;
 
 	public List<Client> findAll() {
 		return repository.findAll();
@@ -145,6 +148,10 @@ public class ClientService {
 				objDTO.getDistrict(), objDTO.getCep(), null, city);
 
 		return adress;
+	}
+	
+	public void uploadProfilePicture(MultipartFile file, String filePath) {
+		dropboxService.uploadFile(file, filePath);
 	}
 
 	private Client updatingAddress(Client oldObj, Address obj) {
