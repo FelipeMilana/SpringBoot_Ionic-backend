@@ -1,10 +1,13 @@
 package com.javaudemy.SpringBoot_Ionic.services;
 
+import java.awt.image.BufferedImage;
+import java.io.InputStream;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -41,6 +44,11 @@ public class ClientService {
 	private BCryptPasswordEncoder encoder;
 	@Autowired
 	private DropboxService dropboxService;
+	@Autowired
+	private ImageService imgService;
+	
+	@Value("${img.prefix.client.profile}")
+	private String prefix;
 
 	public List<Client> findAll() {
 		return repository.findAll();
@@ -158,7 +166,10 @@ public class ClientService {
 			throw new AuthorizationException("Acesso negado");
 		}
 		
-		URI uri = dropboxService.uploadFile(file);
+		BufferedImage jpgImage = imgService.getJpgImageFromFile(file);
+		String fileName = prefix+ user.getId()+ ".jpg";
+		InputStream is = imgService.getInputStream(jpgImage, "jpg");
+		URI uri = dropboxService.uploadFile(is, fileName);
 		
 		Optional<Client> cli = repository.findById(user.getId());
 		cli.get().setImageURL(uri.toString());

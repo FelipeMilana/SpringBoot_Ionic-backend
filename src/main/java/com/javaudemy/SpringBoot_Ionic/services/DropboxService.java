@@ -26,16 +26,25 @@ public class DropboxService {
 	
 	public URI uploadFile(MultipartFile file) {
 		try {
-			LOG.info("Iniciando upload");
 			String fileName = file.getOriginalFilename();
 			InputStream inputStream = file.getInputStream();
-			FileMetadata metadata = dbxClient.files().uploadBuilder("/" +fileName).uploadAndFinish(inputStream);
+			return uploadFile(inputStream, fileName);
+		} 
+		catch (IOException e) {
+			throw new FileException("Erro de IO: " + e.getMessage());
+		}
+		
+	}
+	
+	public URI uploadFile(InputStream is, String fileName) {
+		try {
+			LOG.info("Iniciando upload");
+			FileMetadata metadata = dbxClient.files().uploadBuilder("/" +fileName).uploadAndFinish(is);
 			LOG.info("Upload feito");
 			String url = dbxClient.sharing().createSharedLinkWithSettings(metadata.getId()).getUrl();
 			LOG.info("URL gerada");
 			return new URI(url);
 		}
-		
 		catch (IOException e) {
 			throw new FileException("Erro de IO: " + e.getMessage());
 		}  
