@@ -1,5 +1,6 @@
 package com.javaudemy.SpringBoot_Ionic.services;
 
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
@@ -150,8 +151,8 @@ public class ClientService {
 		return adress;
 	}
 	
-	public void uploadProfilePicture(MultipartFile file, String filePath) {
-		dropboxService.uploadFile(file, filePath);
+	public URI uploadProfilePicture(MultipartFile file) {
+		return dropboxService.uploadFile(file);
 	}
 
 	private Client updatingAddress(Client oldObj, Address obj) {

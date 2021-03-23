@@ -82,10 +82,10 @@ public class ClientResource {
 	}
 	
 	@PostMapping(value = "/picture")
-	public ResponseEntity<Void> uploadProfilePicture(@RequestParam(name="file") MultipartFile file, @RequestParam(name="path") String filePath) {
-		service.uploadProfilePicture(file, filePath);
-		return ResponseEntity.noContent().build();
-	}
+	public ResponseEntity<Void> uploadProfilePicture(@RequestParam(name="file") MultipartFile file) {
+		URI uri = service.uploadProfilePicture(file);
+		return ResponseEntity.created(uri).build();
+	}	
 	
 	@PutMapping(value = "/{id}") //204
 	public ResponseEntity<Void> update(@Valid @RequestBody ClientUpdateDTO objDTO, @PathVariable Integer id){

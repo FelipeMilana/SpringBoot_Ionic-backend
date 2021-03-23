@@ -2,6 +2,8 @@ package com.javaudemy.SpringBoot_Ionic.services;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,7 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.dropbox.core.DbxException;
 import com.dropbox.core.v2.DbxClientV2;
-import com.dropbox.core.v2.files.UploadErrorException;
+import com.dropbox.core.v2.files.FileMetadata;
 
 @Service
 public class DropboxService {
@@ -21,21 +23,25 @@ public class DropboxService {
 	@Autowired
 	private DbxClientV2 dbxClient;
 	
-	public void uploadFile(MultipartFile file, String filePath) {
+	public URI uploadFile(MultipartFile file) {
 		try {
 			LOG.info("Iniciando upload");
+			String fileName = file.getOriginalFilename();
 			InputStream inputStream = file.getInputStream();
-			dbxClient.files().uploadBuilder(filePath).uploadAndFinish(inputStream);
+			FileMetadata metadata = dbxClient.files().uploadBuilder("/" +fileName).uploadAndFinish(inputStream);
 			LOG.info("Upload feito");
-		} 
+			String Url = dbxClient.sharing().getFileMetadata(metadata.getId()).getPreviewUrl();
+			LOG.info("URL gerada");
+			return new URI(Url);
+		}
 		
 		catch (IOException e) {
 			throw new RuntimeException();
-		} 
-		catch (UploadErrorException e) {
+		}  
+		catch (DbxException e) {
 			throw new RuntimeException();
 		} 
-		catch (DbxException e) {
+		catch (URISyntaxException e) {
 			throw new RuntimeException();
 		}
 	}
