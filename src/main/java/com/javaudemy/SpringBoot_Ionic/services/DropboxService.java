@@ -31,9 +31,9 @@ public class DropboxService {
 			InputStream inputStream = file.getInputStream();
 			FileMetadata metadata = dbxClient.files().uploadBuilder("/" +fileName).uploadAndFinish(inputStream);
 			LOG.info("Upload feito");
-			String Url = dbxClient.sharing().getFileMetadata(metadata.getId()).getPreviewUrl();
+			String url = dbxClient.sharing().createSharedLinkWithSettings(metadata.getId()).getUrl();
 			LOG.info("URL gerada");
-			return new URI(Url);
+			return new URI(url);
 		}
 		
 		catch (IOException e) {

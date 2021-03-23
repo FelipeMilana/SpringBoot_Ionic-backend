@@ -40,6 +40,8 @@ public class Client implements Serializable{
 	
 	private String type;
 	
+	private String imageURL;
+	
 	@JsonIgnore
 	private String password;
 	
@@ -102,6 +104,14 @@ public class Client implements Serializable{
 
 	public void setCpfOrCnpj(String cpfOrCnpj) {
 		this.cpfOrCnpj = cpfOrCnpj;
+	}
+	
+	public String getImageURL() {
+		return imageURL;
+	}
+	
+	public void setImageURL(String imageURL) {
+		this.imageURL = imageURL;
 	}
 	
 	public String getPassword() {

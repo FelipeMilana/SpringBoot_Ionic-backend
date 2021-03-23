@@ -152,7 +152,19 @@ public class ClientService {
 	}
 	
 	public URI uploadProfilePicture(MultipartFile file) {
-		return dropboxService.uploadFile(file);
+		UserSS user = UserService.authenticatedUser();
+		
+		if(user == null) {
+			throw new AuthorizationException("Acesso negado");
+		}
+		
+		URI uri = dropboxService.uploadFile(file);
+		
+		Optional<Client> cli = repository.findById(user.getId());
+		cli.get().setImageURL(uri.toString());
+		repository.save(cli.get());
+		
+		return uri;
 	}
 
 	private Client updatingAddress(Client oldObj, Address obj) {
