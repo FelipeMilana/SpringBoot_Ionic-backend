@@ -49,6 +49,9 @@ public class ClientService {
 	
 	@Value("${img.prefix.client.profile}")
 	private String prefix;
+	
+	@Value("${img.profile.size}")
+	private Integer size;
 
 	public List<Client> findAll() {
 		return repository.findAll();
@@ -167,6 +170,11 @@ public class ClientService {
 		}
 		
 		BufferedImage jpgImage = imgService.getJpgImageFromFile(file);
+		
+		//image adjustments
+		jpgImage = imgService.cropSquare(jpgImage);
+		jpgImage = imgService.resize(jpgImage, size);
+		
 		String fileName = prefix+ user.getId()+ ".jpg";
 		InputStream is = imgService.getInputStream(jpgImage, "jpg");
 		URI uri = dropboxService.uploadFile(is, fileName);

@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.dropbox.core.DbxException;
 import com.dropbox.core.v2.DbxClientV2;
 import com.dropbox.core.v2.files.FileMetadata;
+import com.dropbox.core.v2.files.WriteMode;
 import com.javaudemy.SpringBoot_Ionic.services.exceptions.FileException;
 
 @Service
@@ -39,7 +40,11 @@ public class DropboxService {
 	public URI uploadFile(InputStream is, String fileName) {
 		try {
 			LOG.info("Iniciando upload");
-			FileMetadata metadata = dbxClient.files().uploadBuilder("/" +fileName).uploadAndFinish(is);
+			FileMetadata metadata = dbxClient.files()
+					.uploadBuilder("/" +fileName)
+					.withAutorename(true)
+					.withMode(WriteMode.ADD)
+					.uploadAndFinish(is);
 			LOG.info("Upload feito");
 			String url = dbxClient.sharing().createSharedLinkWithSettings(metadata.getId()).getUrl();
 			LOG.info("URL gerada");
