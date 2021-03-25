@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +19,7 @@ import com.dropbox.core.v2.files.ListFolderErrorException;
 import com.dropbox.core.v2.files.ListFolderResult;
 import com.dropbox.core.v2.files.Metadata;
 import com.dropbox.core.v2.files.WriteMode;
+import com.dropbox.core.v2.sharing.SharedLinkMetadata;
 import com.javaudemy.SpringBoot_Ionic.services.exceptions.FileException;
 
 @Service
@@ -74,12 +76,22 @@ public class DropboxService {
 		
 			for(Metadata metadata: result.getEntries()) {
 				if(metadata.getName().equalsIgnoreCase(fileName)) { 
-					String url = dbxClient.sharing().createSharedLinkWithSettings(((FileMetadata) metadata).getId()).getUrl();
+					
+					String url = null;
+					
+					List<SharedLinkMetadata> list = dbxClient.sharing().listSharedLinksBuilder().withPath(((FileMetadata) metadata).getId()).start().getLinks();
+					for(SharedLinkMetadata shared: list) {
+						url = shared.getUrl();
+					}
+					
+					if(url == null) {
+						url = dbxClient.sharing().createSharedLinkWithSettings(((FileMetadata) metadata).getId()).getUrl();
+						LOG.info("URL gerada");
+					}
 					
 					//cors configuration
 					String newUrl = "https://dl.dropboxusercontent.com" + url.substring(23);
 					
-					LOG.info("URL gerada");
 					return new URI(newUrl);
 				}
 			}
