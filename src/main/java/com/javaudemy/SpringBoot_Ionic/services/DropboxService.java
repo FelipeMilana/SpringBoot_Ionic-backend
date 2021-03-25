@@ -14,6 +14,9 @@ import org.springframework.web.multipart.MultipartFile;
 import com.dropbox.core.DbxException;
 import com.dropbox.core.v2.DbxClientV2;
 import com.dropbox.core.v2.files.FileMetadata;
+import com.dropbox.core.v2.files.ListFolderErrorException;
+import com.dropbox.core.v2.files.ListFolderResult;
+import com.dropbox.core.v2.files.Metadata;
 import com.dropbox.core.v2.files.WriteMode;
 import com.javaudemy.SpringBoot_Ionic.services.exceptions.FileException;
 
@@ -57,6 +60,34 @@ public class DropboxService {
 		catch (IOException e) {
 			throw new FileException("Erro de IO: " + e.getMessage());
 		}  
+		catch (DbxException e) {
+			throw new FileException("Erro de Dbx: " + e.getMessage());
+		} 
+		catch (URISyntaxException e) {
+			throw new FileException("Erro de URISyntax: " + e.getMessage());
+		}
+	}
+	
+	public URI getFile(String fileName) {
+		try {
+			ListFolderResult result = dbxClient.files().listFolder("");
+		
+			for(Metadata metadata: result.getEntries()) {
+				if(metadata.getName().equalsIgnoreCase(fileName)) { 
+					String url = dbxClient.sharing().createSharedLinkWithSettings(((FileMetadata) metadata).getId()).getUrl();
+					
+					//cors configuration
+					String newUrl = "https://dl.dropboxusercontent.com" + url.substring(23);
+					
+					LOG.info("URL gerada");
+					return new URI(newUrl);
+				}
+			}
+			return null;
+		} 
+		catch (ListFolderErrorException e) {
+			throw new FileException("Erro de ListFolderError: " + e.getMessage());
+		} 
 		catch (DbxException e) {
 			throw new FileException("Erro de Dbx: " + e.getMessage());
 		} 
