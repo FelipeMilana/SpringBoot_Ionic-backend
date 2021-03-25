@@ -47,8 +47,12 @@ public class DropboxService {
 					.uploadAndFinish(is);
 			LOG.info("Upload feito");
 			String url = dbxClient.sharing().createSharedLinkWithSettings(metadata.getId()).getUrl();
+			
+			//cors configuration
+			String newUrl = "https://dl.dropboxusercontent.com" + url.substring(23);
+			
 			LOG.info("URL gerada");
-			return new URI(url);
+			return new URI(newUrl);
 		}
 		catch (IOException e) {
 			throw new FileException("Erro de IO: " + e.getMessage());
