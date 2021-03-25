@@ -29,6 +29,7 @@ public class Product implements Serializable {
 	private Integer id;
 	private String name;
 	private Double price;
+	private String imageUrl;
 
 	// associations
 	@JsonIgnore
@@ -83,7 +84,15 @@ public class Product implements Serializable {
 	public void setPrice(Double price) {
 		this.price = price;
 	}
-
+	
+	public String getImageUrl() {
+		return imageUrl;
+	}
+	
+	public void setImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
+	}
+	
 	public List<Category> getCategories() {
 		return categories;
 	}

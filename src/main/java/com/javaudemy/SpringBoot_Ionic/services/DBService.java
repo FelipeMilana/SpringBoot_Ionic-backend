@@ -78,16 +78,27 @@ public class DBService {
 		
 		
 		Product p1 = new Product(null, "Computador", 2000.00);
+		p1.setImageUrl("https://dl.dropboxusercontent.com/s/umrv2egn0p81daf/prod1.jpg?dl=0");
 		Product p2 = new Product(null, "Impressora", 800.00);
+		p2.setImageUrl("https://dl.dropboxusercontent.com/s/zys8wm5fp7jq1r6/prod2.jpg?dl=0");
 		Product p3 = new Product(null, "Mouse", 80.00);
+		p3.setImageUrl("https://dl.dropboxusercontent.com/s/ka59w7o9bsjw4hw/prod3.jpg?dl=0");
 		Product p4 = new Product(null, "Mesa de escritório", 300.00);
+		p4.setImageUrl("https://dl.dropboxusercontent.com/s/82686asl50dmql3/prod4.jpg?dl=0");
 		Product p5 = new Product(null, "Toalha", 50.00);
+		p5.setImageUrl("https://dl.dropboxusercontent.com/s/nlvr7xnf7o0o1fv/prod5.jpg?dl=0");
 		Product p6 = new Product(null, "Colcha", 200.00);
+		p6.setImageUrl("https://dl.dropboxusercontent.com/s/6c8htj72mdd3gv1/prod6.jpg?dl=0");
 		Product p7 = new Product(null, "TV true color", 1200.00);
+		p7.setImageUrl("https://dl.dropboxusercontent.com/s/lc5wl5oqifr9i7z/prod7.jpg?dl=0");
 		Product p8 = new Product(null, "Roçadeira", 800.00);
+		p8.setImageUrl("https://dl.dropboxusercontent.com/s/p99n5d5c0hdmldy/prod8.jpg?dl=0");
 		Product p9 = new Product(null, "Abajour", 100.00);
+		p9.setImageUrl("https://dl.dropboxusercontent.com/s/hmf9r2ee9fzesy8/prod9.jpg?dl=0");
 		Product p10 = new Product(null, "Pendente", 180.00);
+		p10.setImageUrl("https://dl.dropboxusercontent.com/s/2slxsr6ecf73k6o/prod10.jpg?dl=0");
 		Product p11 = new Product(null, "Shampoo", 90.00);
+		p11.setImageUrl("https://dl.dropboxusercontent.com/s/l9f5w9kzefzxb81/prod11.jpg?dl=0");
 		
 		
 		//ManyToMany associations

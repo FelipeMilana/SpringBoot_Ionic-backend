@@ -11,6 +11,7 @@ public class ProductDTO implements Serializable {
 	private Integer id;
 	private String name;
 	private Double price;
+	private String imageUrl;
 	
 	public ProductDTO() {
 	}
@@ -19,6 +20,7 @@ public class ProductDTO implements Serializable {
 		this.id = obj.getId();
 		this.name = obj.getName();
 		this.price = obj.getPrice();
+		this.imageUrl = obj.getImageUrl();
 	}
 
 	public Integer getId() {
@@ -43,5 +45,13 @@ public class ProductDTO implements Serializable {
 
 	public void setPrice(Double price) {
 		this.price = price;
+	}
+	
+	public String getImageUrl() {
+		return imageUrl;
+	}
+	
+	public void setImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
 	}
 }

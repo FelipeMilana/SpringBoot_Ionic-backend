@@ -50,7 +50,7 @@ public class ClientService {
 	@Value("${img.prefix.client.profile}")
 	private String prefix;
 	
-	@Value("${img.profile.size}")
+	@Value("${img.size}")
 	private Integer size;
 
 	public List<Client> findAll() {

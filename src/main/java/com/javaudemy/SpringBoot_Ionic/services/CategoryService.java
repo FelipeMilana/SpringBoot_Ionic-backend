@@ -34,7 +34,7 @@ public class CategoryService {
 	@Value("${img.prefix.category}")
 	private String prefix;
 	
-	@Value("${img.profile.size}")
+	@Value("${img.size}")
 	private Integer size;
 	
 	public List<Category> findAll()	{
