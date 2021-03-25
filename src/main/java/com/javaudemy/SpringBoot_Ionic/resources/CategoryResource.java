@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.javaudemy.SpringBoot_Ionic.domain.Category;
@@ -63,6 +64,13 @@ public class CategoryResource {
 		Category obj = service.fromDTO(objDTO);
 		obj =  service.insert(obj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
+		return ResponseEntity.created(uri).build();
+	}
+	
+	@PreAuthorize("hasAnyRole('ADMIN')")
+	@PostMapping(value = "/{id}/picture")
+	public ResponseEntity<Void> uploadPicture(@RequestParam(name="file") MultipartFile file, @PathVariable Integer id) {
+		URI uri = service.uploadPicture(file, id);
 		return ResponseEntity.created(uri).build();
 	}
 	

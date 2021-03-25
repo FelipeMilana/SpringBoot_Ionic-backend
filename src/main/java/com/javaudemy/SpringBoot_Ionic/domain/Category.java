@@ -22,6 +22,8 @@ public class Category implements Serializable{
 	private Integer id;
 	private String name;
 	
+	private String imageUrl;
+	
 	//associations
 	@ManyToMany(mappedBy =  "categories")
 	private List<Product> products = new ArrayList<>();
@@ -48,6 +50,14 @@ public class Category implements Serializable{
 	
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	public String getImageUrl() {
+		return imageUrl;
+	}
+	
+	public void setImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
 	}
 	
 	public List<Product> getProducts() {

@@ -61,12 +61,19 @@ public class DBService {
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 		
 		Category cat1 = new Category(null, "Informática");
+		cat1.setImageUrl("https://dl.dropboxusercontent.com/s/hb4b6y3m5gf5l03/cat1.jpg?dl=0");
 		Category cat2 = new Category(null, "Escritório");
+		cat2.setImageUrl("https://dl.dropboxusercontent.com/s/2mxhqr3hdqof6vf/cat2.jpg?dl=0");
 		Category cat3 = new Category(null, "Cama, mesa e banho");
+		cat3.setImageUrl("https://dl.dropboxusercontent.com/s/k46pn8q1sf5az4h/cat3.jpg?dl=0");
 		Category cat4 = new Category(null, "Eletrônicos");
+		cat4.setImageUrl("https://dl.dropboxusercontent.com/s/89ja81zx07ddc5k/cat4.jpg?dl=0");
 		Category cat5 = new Category(null, "Jardinagem");
+		cat5.setImageUrl("https://dl.dropboxusercontent.com/s/3ccyi6qy17bgp2i/cat5.jpg?dl=0");
 		Category cat6 = new Category(null, "Decoração");
+		cat6.setImageUrl("https://dl.dropboxusercontent.com/s/iklugfmah59gq0b/cat6.jpg?dl=0");
 		Category cat7 = new Category(null, "Perfumaria");
+		cat7.setImageUrl("https://dl.dropboxusercontent.com/s/ky57xyafgjqtd9i/cat7.jpg?dl=0");
 		
 		
 		
