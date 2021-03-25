@@ -46,10 +46,10 @@ public class ClientService {
 	private DropboxService dropboxService;
 	@Autowired
 	private ImageService imgService;
-	
+
 	@Value("${img.prefix.client.profile}")
 	private String prefix;
-	
+
 	@Value("${img.size}")
 	private Integer size;
 
@@ -139,6 +139,14 @@ public class ClientService {
 		if (objDTO.getTelephone3() != null) {
 			cli.getTelephones().add(objDTO.getTelephone3());
 		}
+
+		URI uri = dropboxService.getFile("blank-avatar.jpg");
+
+		if (uri == null) {
+			throw new ObjectNotFoundException("Uri não encontrada");
+		}
+		
+		cli.setImageURL(uri.toString());
 		return cli;
 	}
 
@@ -161,28 +169,28 @@ public class ClientService {
 
 		return adress;
 	}
-	
+
 	public URI uploadProfilePicture(MultipartFile file) {
 		UserSS user = UserService.authenticatedUser();
-		
-		if(user == null) {
+
+		if (user == null) {
 			throw new AuthorizationException("Acesso negado");
 		}
-		
+
 		BufferedImage jpgImage = imgService.getJpgImageFromFile(file);
-		
-		//image adjustments
+
+		// image adjustments
 		jpgImage = imgService.cropSquare(jpgImage);
 		jpgImage = imgService.resize(jpgImage, size);
-		
-		String fileName = prefix+ user.getId()+ ".jpg";
+
+		String fileName = prefix + user.getId() + ".jpg";
 		InputStream is = imgService.getInputStream(jpgImage, "jpg");
 		URI uri = dropboxService.uploadFile(is, fileName);
-		
+
 		Optional<Client> cli = repository.findById(user.getId());
 		cli.get().setImageURL(uri.toString());
 		repository.save(cli.get());
-		
+
 		return uri;
 	}
 
@@ -231,8 +239,8 @@ public class ClientService {
 		for (int i = oldObj.getTelephones().size(); i < obj.getTelephones().size(); i++) {
 			oldObj.getTelephones().add(i, obj.getTelephones().get(i));
 		}
-		
-		if(obj.getPassword() != null) {
+
+		if (obj.getPassword() != null) {
 			oldObj.setPassword(encoder.encode(obj.getPassword()));
 		}
 		return oldObj;

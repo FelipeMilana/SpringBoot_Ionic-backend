@@ -142,10 +142,12 @@ public class DBService {
 		
 		Client cli1 = new Client(null, "Maria Silva", "pedroaugs15@gmail.com", "36378912377", ClientType.PESSOAFISICA, encoder.encode("123"));
 		cli1.getTelephones().addAll(Arrays.asList("27363323", "93836393"));
+		cli1.setImageURL("https://dl.dropboxusercontent.com/s/orss648lmbhozbf/cp1.jpg?dl=0");
 		
 		Client cli2 = new Client(null, "Ana Costa", "games.clorin@gmail.com", "87325165099", ClientType.PESSOAFISICA, encoder.encode("456"));
 		cli2.addProfile(Profile.ADMIN);
 		cli2.getTelephones().addAll(Arrays.asList("978884653", "654456457"));
+		cli2.setImageURL("https://dl.dropboxusercontent.com/s/fnqzidvqz4b6jk7/cp2.jpg?dl=0");
 		
 		Address ad1 = new Address(null, "Rua Flores", "300", "Apto 203", "Jardim", "38220834", cli1, c1);
 		Address ad2 = new Address(null, "Avenida Matos", "105", "Sala 800", "Centro", "38777012", cli1, c2);
