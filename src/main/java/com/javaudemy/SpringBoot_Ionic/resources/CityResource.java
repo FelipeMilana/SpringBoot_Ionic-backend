@@ -20,45 +20,35 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.javaudemy.SpringBoot_Ionic.domain.City;
-import com.javaudemy.SpringBoot_Ionic.domain.State;
 import com.javaudemy.SpringBoot_Ionic.domain.dto.CityDTO;
-import com.javaudemy.SpringBoot_Ionic.domain.dto.StateDTO;
+import com.javaudemy.SpringBoot_Ionic.domain.dto.CityInsertDTO;
+import com.javaudemy.SpringBoot_Ionic.domain.dto.CityUpdateDTO;
 import com.javaudemy.SpringBoot_Ionic.services.CityService;
-import com.javaudemy.SpringBoot_Ionic.services.StateService;
 
 @RestController
-@RequestMapping(value = "/states")
-public class StateResource {
+@RequestMapping(value = "/cities")
+public class CityResource {
 
 	@Autowired
-	private StateService service;
-	@Autowired
-	private CityService cityService;
+	private CityService service;
 	
 	@GetMapping
-	public ResponseEntity<List<StateDTO>> findAllByOrderByName() {
-		List<State> list = service.findAllByOrderByName();
-		List<StateDTO> listDTO = list.stream().map(obj -> new StateDTO(obj)).collect(Collectors.toList());
+	public ResponseEntity<List<CityDTO>> findAll() {
+		List<City> list = service.findAll();
+		List<CityDTO> listDTO = list.stream().map(obj -> new CityDTO(obj)).collect(Collectors.toList());
 		return ResponseEntity.ok().body(listDTO);
 	}
 	
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<State> findById(@PathVariable Integer id) {
-		State obj = service.findById(id);
+	public ResponseEntity<City> findById(@PathVariable Integer id) {
+		City obj = service.findById(id);
 		return ResponseEntity.ok().body(obj);
-	}
-	
-	@GetMapping(value = "/{stateId}/cities")
-	public ResponseEntity<List<CityDTO>> findByStateIdOrderByName(@PathVariable Integer stateId) {
-		List<City> cities = cityService.findByStateIdOrderByName(stateId);
-		List<CityDTO> citiesDTO = cities.stream().map(obj -> new CityDTO(obj)).collect(Collectors.toList());
-		return ResponseEntity.ok().body(citiesDTO);
 	}
 	
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	@PostMapping
-	public ResponseEntity<Void> insert(@Valid @RequestBody StateDTO objDTO) {
-		State obj = service.fromDTO(objDTO);
+	public ResponseEntity<Void> insert(@Valid @RequestBody CityInsertDTO objDTO) {
+		City obj = service.fromDTO(objDTO);
 		obj =  service.insert(obj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
 		return ResponseEntity.created(uri).build();
@@ -66,8 +56,8 @@ public class StateResource {
 	
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<Void> update(@Valid @RequestBody StateDTO objDTO, @PathVariable Integer id){
-		State obj = service.fromDTO(objDTO);
+	public ResponseEntity<Void> update(@Valid @RequestBody CityUpdateDTO objDTO, @PathVariable Integer id){
+		City obj = service.fromDTO(objDTO);
 		obj = service.update(id, obj);
 		return ResponseEntity.noContent().build();
 	}
