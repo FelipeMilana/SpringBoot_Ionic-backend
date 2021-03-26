@@ -76,7 +76,7 @@ public class CategoryService {
 	public Category fromDTO(CategoryDTO objDTO) {
 		Category cat = new Category(objDTO.getId(), objDTO.getName());
 		
-		URI uri = dropboxService.getFile("cat.jpg");
+		URI uri = dropboxService.getUriFromFile("cat.jpg");
 		
 		if(uri == null) {
 			throw new ObjectNotFoundException("Uri não encontrada");

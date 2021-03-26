@@ -84,7 +84,7 @@ public class ProductService {
 	public Product fromDTO(ProductInsertDTO objDTO) {
 		Product prod = new Product(null, objDTO.getName(), objDTO.getPrice());
 
-		URI uri = dropboxService.getFile("prod.jpg");
+		URI uri = dropboxService.getUriFromFile("prod.jpg");
 
 		if (uri == null) {
 			throw new ObjectNotFoundException("Uri não encontrada");

@@ -140,7 +140,7 @@ public class ClientService {
 			cli.getTelephones().add(objDTO.getTelephone3());
 		}
 
-		URI uri = dropboxService.getFile("blank-avatar.jpg");
+		URI uri = dropboxService.getUriFromFile("blank-avatar.jpg");
 
 		if (uri == null) {
 			throw new ObjectNotFoundException("Uri não encontrada");

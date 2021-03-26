@@ -70,7 +70,7 @@ public class DropboxService {
 		}
 	}
 	
-	public URI getFile(String fileName) {
+	public URI getUriFromFile(String fileName) {
 		try {
 			ListFolderResult result = dbxClient.files().listFolder("");
 		
@@ -106,5 +106,5 @@ public class DropboxService {
 		catch (URISyntaxException e) {
 			throw new FileException("Erro de URISyntax: " + e.getMessage());
 		}
-	}
+	}	
 }
