@@ -65,10 +65,17 @@ public class ProductService {
 	}
 
 	public void delete(Integer id) {
-		findById(id);
+		Product prod = findById(id);
+		String url = prod.getImageUrl();
+		
 		try {
 			repository.deleteById(id);
-		} catch (DataIntegrityViolationException e) {
+			
+			if(url != null) {
+				dropboxService.deleteFile(url);
+			}	
+		} 
+		catch (DataIntegrityViolationException e) {
 			throw new DataIntegrityException(
 					"Não é possível excluir um produto que está presente em um item de pedido");
 		}

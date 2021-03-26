@@ -59,9 +59,16 @@ public class CategoryService {
 	}
 
 	public void delete(Integer id) {
-		findById(id);
+		Category cat = findById(id);
+		
+		String url = cat.getImageUrl();
+		
 		try {
 			repository.deleteById(id);
+			
+			if(url != null) {
+				dropboxService.deleteFile(url);
+			}
 		}
 		catch(DataIntegrityViolationException e) {
 			throw new DataIntegrityException("Não é possível excluir uma categoria que possui produtos");

@@ -12,6 +12,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import com.dropbox.core.v2.files.DeleteErrorException;
 import com.dropbox.core.v2.files.UploadErrorException;
 import com.javaudemy.SpringBoot_Ionic.services.exceptions.AuthorizationException;
 import com.javaudemy.SpringBoot_Ionic.services.exceptions.DataIntegrityException;
@@ -74,10 +75,19 @@ public class ResourceExceptionHandler {
 	}
 	
 	@ExceptionHandler(UploadErrorException.class)
-	public ResponseEntity<StandardError> Authorization(UploadErrorException e, HttpServletRequest request) {
+	public ResponseEntity<StandardError> uploadError(UploadErrorException e, HttpServletRequest request) {
 		HttpStatus status = HttpStatus.BAD_REQUEST;
 		StandardError err = new StandardError(Instant.now(), status.value(), status.getReasonPhrase(), 
 												e.getClass().getName(), e.getMessage(), request.getRequestURI());
 		return ResponseEntity.status(status).body(err);
 	}
+	
+	@ExceptionHandler(DeleteErrorException.class)
+	public ResponseEntity<StandardError> deleteError(DeleteErrorException e, HttpServletRequest request) {
+		HttpStatus status = HttpStatus.BAD_REQUEST;
+		StandardError err = new StandardError(Instant.now(), status.value(), status.getReasonPhrase(), 
+												e.getClass().getName(), e.getMessage(), request.getRequestURI());
+		return ResponseEntity.status(status).body(err);
+	}
+
 }

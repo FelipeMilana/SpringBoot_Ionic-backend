@@ -86,10 +86,17 @@ public class ClientService {
 	}
 
 	public void delete(Integer id) {
-		findById(id);
+		Client cli = findById(id);
+		String url = cli.getImageURL();
+		
 		try {
 			repository.deleteById(id);
-		} catch (DataIntegrityViolationException e) {
+			
+			if(url != null) {
+				dropboxService.deleteFile(url);
+			}
+		} 
+		catch (DataIntegrityViolationException e) {
 			throw new DataIntegrityException("Não é possível excluir porque há pedidos relacionados");
 		}
 	}
