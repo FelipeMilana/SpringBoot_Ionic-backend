@@ -69,6 +69,22 @@ public class ClientService {
 				"Objeto não encontrado! Id: " + id + ", Tipo: " + Client.class.getName()));
 	}
 
+	public Client findByEmail(String email) {
+		UserSS user = UserService.authenticatedUser();
+		
+		if(user == null || (!user.hasRole(Profile.ADMIN) && !email.equals(user.getUsername()))) {
+			throw new AuthorizationException("Acesso negado");
+		}
+		
+		Client obj = repository.findByEmail(email);
+		
+		if(obj == null) {
+			throw new ObjectNotFoundException("Objeto não encontrado! Email: " + email + ", Tipo: " + Client.class.getName());
+		}
+		
+		return obj;
+	}
+	
 	public Client insert(Client obj) {
 		return repository.save(obj);
 	}

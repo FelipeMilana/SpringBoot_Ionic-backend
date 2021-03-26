@@ -46,12 +46,6 @@ public class ClientResource {
 		return ResponseEntity.ok().body(listDTO);
 	}
 	
-	@GetMapping(value = "/{id}")
-	public ResponseEntity<Client> findById(@PathVariable Integer id) {
-		Client obj = service.findById(id);
-		return ResponseEntity.ok().body(obj);
-	}
-	
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	@GetMapping(value = "/page")
 	public ResponseEntity<Page<ClientDTO>> findPage(
@@ -63,6 +57,18 @@ public class ClientResource {
 		Page<Client> list = service.findPage(page, linesPerPage, orderBy, direction);
 		Page<ClientDTO> listDTO = list.map(obj -> new ClientDTO(obj));
 		return ResponseEntity.ok().body(listDTO);
+	}
+	
+	@GetMapping(value = "/{id}")
+	public ResponseEntity<Client> findById(@PathVariable Integer id) {
+		Client obj = service.findById(id);
+		return ResponseEntity.ok().body(obj);
+	}
+	
+	@GetMapping(value = "/email")
+	public ResponseEntity<Client> findByEmail(@RequestParam(value = "value") String email) {
+		Client obj = service.findByEmail(email);
+		return ResponseEntity.ok().body(obj);
 	}
 	
 	@PostMapping //201
