@@ -17,12 +17,15 @@ public class CategoryDTO implements Serializable{
 	@Size(min=5, max=80, message="O tamanho deve ser entre 5 e 80 caracteres")
 	private String name;
 	
+	private String imgUrl;
+	
 	public CategoryDTO()	{
 	}
 	
 	public CategoryDTO(Category obj) {
 		this.id  = obj.getId();
 		this.name = obj.getName();
+		this.imgUrl = obj.getImageUrl();
 	}
 	
 	public CategoryDTO(Integer id, String name) {
@@ -44,5 +47,13 @@ public class CategoryDTO implements Serializable{
 	
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	public String getImgUrl() {
+		return imgUrl;
+	}
+	
+	public void setImgUrl(String imgUrl) {
+		this.imgUrl = imgUrl;
 	}
 }

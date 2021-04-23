@@ -11,6 +11,7 @@ public class ClientDTO implements Serializable{
 	private Integer id;
 	private String name;
 	private String email;
+	private String imgUrl;
 	
 	public ClientDTO() {
 	}
@@ -19,12 +20,14 @@ public class ClientDTO implements Serializable{
 		this.id = obj.getId();
 		this.name = obj.getName();
 		this.email = obj.getEmail();
+		this.imgUrl = obj.getImageURL();
 	}
 	
-	public ClientDTO(Integer id, String name, String email) {
+	public ClientDTO(Integer id, String name, String email, String imgUrl) {
 		this.id = id;
 		this.name = name;
 		this.email = email;
+		this.imgUrl = imgUrl;
 	}
 
 	public Integer getId() {
@@ -50,4 +53,12 @@ public class ClientDTO implements Serializable{
 	public void setEmail(String email) {
 		this.email = email;
 	}	
+	
+	public String getImgUrl() {
+		return imgUrl;
+	}
+	
+	public void setImgUrl(String imgUrl) {
+		this.imgUrl = imgUrl;
+	}
 }

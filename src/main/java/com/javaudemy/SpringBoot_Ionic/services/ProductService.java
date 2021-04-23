@@ -85,7 +85,7 @@ public class ProductService {
 			String direction) {
 		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
 		List<Category> categories = catRepository.findAllById(ids);
-		return repository.findDistinctByNameContainingAndCategoriesIn(name, categories, pageRequest);
+		return repository.findDistinctByNameContainingIgnoreCaseAndCategoriesIn(name, categories, pageRequest);
 	}
 
 	public Product fromDTO(ProductInsertDTO objDTO) {

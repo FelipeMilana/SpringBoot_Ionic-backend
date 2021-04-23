@@ -127,26 +127,83 @@ public class DBService {
 		
 		State s1 = new State(null, "Minas Gerais");
 		State s2 = new State(null, "São Paulo");
+		State s3 = new State(null, "Rio de Janeiro");
+		State s4 = new State(null, "Distrito Federal");
+		State s5 = new State(null, "Bahia");
+		State s6 = new State(null, "Ceará");
+		State s7 = new State(null, "Amazonas");
+		State s8 = new State(null, "Paraná");
+		State s9 = new State(null, "Pernambuco");
+		State s10 = new State(null, "Goiás");
+		State s11 = new State(null, "Pará");
+		State s12 = new State(null, "Rio Grande do Sul");
+		State s13 = new State(null, "Maranhão");
+		State s14 = new State(null, "Alagoas");
+		State s15 = new State(null, "Mato Grosso do Sul");
+		State s16= new State(null, "Espírito Santo");
+		State s17 = new State(null, "Rio Grande do Norte");
+		State s18 = new State(null, "Paraíba");
+		State s19 = new State(null, "Santa Catarina");
 		
 		City c1 = new City(null, "Uberlândia", s1);
 		City c2 = new City(null, "São Paulo", s2);
 		City c3 = new City(null, "Campinas", s2);
+		City c4 = new City(null, "Rio de Janeiro", s3);
+		City c5 = new City(null, "Brasília", s4);
+		City c6 = new City(null, "Salvador", s5);
+		City c7 = new City(null, "Fortaleza", s6);
+		City c8 = new City(null, "Belo Horizonte", s1);
+		City c9 = new City(null, "Manaus", s7);
+		City c10 = new City(null, "Curitiba", s8);
+		City c11 = new City(null, "Recife", s9);
+		City c12 = new City(null, "Goiânia", s10);
+		City c13 = new City(null, "Belém", s11);
+		City c14 = new City(null, "Porto Alegre", s12);
+		City c15 = new City(null, "Guarulhos", s2);
+		City c16 = new City(null, "São Luís", s13);
+		City c17 = new City(null, "Niterói", s3);
+		City c18 = new City(null, "Maceió", s14);
+		City c19 = new City(null, "Duque de Caxias", s3);
+		City c20 = new City(null, "Campo Grande", s15);
+		City c21 = new City(null, "Vitória", s16);
+		City c22 = new City(null, "Natal", s17);
+		City c23 = new City(null, "João Pessoa", s18);
+		City c24 = new City(null, "Florianópolis", s19);
+		
 		
 		//OneToMany associations
-		s1.getCities().addAll(Arrays.asList(c1));
-		s2.getCities().addAll(Arrays.asList(c2, c3));
+		s1.getCities().addAll(Arrays.asList(c1, c8));
+		s2.getCities().addAll(Arrays.asList(c2, c3, c15));
+		s3.getCities().addAll(Arrays.asList(c4, c17, c19));
+		s4.getCities().addAll(Arrays.asList(c5));
+		s5.getCities().addAll(Arrays.asList(c6));
+		s6.getCities().addAll(Arrays.asList(c7));
+		s7.getCities().addAll(Arrays.asList(c9));
+		s8.getCities().addAll(Arrays.asList(c10));
+		s9.getCities().addAll(Arrays.asList(c11));
+		s10.getCities().addAll(Arrays.asList(c12));
+		s11.getCities().addAll(Arrays.asList(c13));
+		s12.getCities().addAll(Arrays.asList(c14));
+		s13.getCities().addAll(Arrays.asList(c16));
+		s14.getCities().addAll(Arrays.asList(c18));
+		s15.getCities().addAll(Arrays.asList(c20));
+		s16.getCities().addAll(Arrays.asList(c21));
+		s17.getCities().addAll(Arrays.asList(c22));
+		s18.getCities().addAll(Arrays.asList(c23));
+		s19.getCities().addAll(Arrays.asList(c24));
 		
-		stateRepository.saveAll(Arrays.asList(s1, s2));
-		cityRepository.saveAll(Arrays.asList(c1, c2, c3));
+		stateRepository.saveAll(Arrays.asList(s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, s14, s15, s16, s17, s18, s19));
+		cityRepository.saveAll(Arrays.asList(c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15, c16, c17, c18, c18,
+				c19, c20, c21, c22, c23, c24));
 		
 		Client cli1 = new Client(null, "Maria Silva", "pedroaugs15@gmail.com", "36378912377", ClientType.PESSOAFISICA, encoder.encode("123"));
 		cli1.getTelephones().addAll(Arrays.asList("27363323", "93836393"));
 		cli1.setImageURL("https://dl.dropboxusercontent.com/s/orss648lmbhozbf/cp1.jpg?dl=0");
 		
-		Client cli2 = new Client(null, "Ana Costa", "games.clorin@gmail.com", "87325165099", ClientType.PESSOAFISICA, encoder.encode("456"));
+		Client cli2 = new Client(null, "Felipe Milana", "games.clorin@gmail.com", "87325165099", ClientType.PESSOAFISICA, encoder.encode("456"));
 		cli2.addProfile(Profile.ADMIN);
 		cli2.getTelephones().addAll(Arrays.asList("978884653", "654456457"));
-		cli2.setImageURL("https://dl.dropboxusercontent.com/s/fnqzidvqz4b6jk7/cp2.jpg?dl=0");
+		cli2.setImageURL("https://dl.dropboxusercontent.com/s/quxcwvwx0b9peul/cp2.jpg?dl=0");
 		
 		Address ad1 = new Address(null, "Rua Flores", "300", "Apto 203", "Jardim", "38220834", cli1, c1);
 		Address ad2 = new Address(null, "Avenida Matos", "105", "Sala 800", "Centro", "38777012", cli1, c2);

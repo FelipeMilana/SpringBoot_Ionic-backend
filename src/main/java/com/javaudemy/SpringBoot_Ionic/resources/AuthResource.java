@@ -1,4 +1,4 @@
-package com.javaudemy.SpringBoot_Ionic.resources;
+	package com.javaudemy.SpringBoot_Ionic.resources;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -28,7 +28,6 @@ public class AuthResource {
 	@PostMapping(value = "/refresh_token")
 	public ResponseEntity<Void> refreshToken(HttpServletResponse response) {
 		UserSS user = UserService.authenticatedUser();
-		System.out.println("User :" + user.getUsername());
 		String token = jwtUtil.generateToken(user.getUsername());
 		response.addHeader("Authorization", "Bearer " + token);
 		response.addHeader("access-control-expose-headers", "Authorization");

@@ -3,7 +3,6 @@ package com.javaudemy.SpringBoot_Ionic.services.validations;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintValidator;
@@ -41,18 +40,6 @@ public class UpdateClientValidator implements ConstraintValidator<UpdateClient, 
 		
 		if(aux != null && !aux.getId().equals(uriId)) {
 			list.add(new FieldMessage("email", "Email já existente"));
-		}
-		
-		Optional<Client> client = clientRepository.findById(uriId);
-		
-		if(client.get().getTelephones().contains(objDTO.getTelephone1())) {
-			list.add(new FieldMessage("telephone1", "Este telefone já está cadastrado neste cliente"));
-		}
-		if(client.get().getTelephones().contains(objDTO.getTelephone2())) {
-			list.add(new FieldMessage("telephone2", "Este telefone já está cadastrado neste cliente"));
-		}
-		if(client.get().getTelephones().contains(objDTO.getTelephone3())) {
-			list.add(new FieldMessage("telephone3", "Este telefone já está cadastrado neste cliente"));
 		}
 		
 		for (FieldMessage e : list) {

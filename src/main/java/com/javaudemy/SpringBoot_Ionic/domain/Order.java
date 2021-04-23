@@ -34,7 +34,7 @@ public class Order implements Serializable{
 	private Integer id;
 	
 	@Temporal(TemporalType.TIMESTAMP)
-	@JsonFormat(pattern="dd/MM/yyyy HH:mm")
+	@JsonFormat(pattern="dd/MM/yyyy HH:mm", timezone="GMT-3")
 	private Date instant;
 	
 	//associations
