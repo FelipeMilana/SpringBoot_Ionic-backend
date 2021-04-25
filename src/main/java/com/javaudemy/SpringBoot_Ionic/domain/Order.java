@@ -141,7 +141,7 @@ public class Order implements Serializable{
 	public String toString() {
 		NumberFormat nf =  NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
 		SimpleDateFormat sdf  =  new SimpleDateFormat("dd/MM/yyyy HH:mm");
-		sdf.setTimeZone(TimeZone.getTimeZone("GMT-3"));
+		sdf.setTimeZone(TimeZone.getTimeZone("UTC-3"));
 		
 		StringBuilder builder = new StringBuilder();
 		builder.append("Número de Pedido: ");
