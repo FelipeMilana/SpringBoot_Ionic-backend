@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
+import java.util.TimeZone;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -140,6 +141,7 @@ public class Order implements Serializable{
 	public String toString() {
 		NumberFormat nf =  NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
 		SimpleDateFormat sdf  =  new SimpleDateFormat("dd/MM/yyyy HH:mm");
+		sdf.setTimeZone(TimeZone.getTimeZone("GMT-3"));
 		
 		StringBuilder builder = new StringBuilder();
 		builder.append("Número de Pedido: ");
