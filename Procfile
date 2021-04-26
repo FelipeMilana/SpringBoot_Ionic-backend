@@ -1,1 +1,1 @@
-web: java -Dserver.port=$PORT -Dspring.profiles.active=prod $JAVA_OPTS -jar target/SpringBoot_Ionic-0.0.1-SNAPSHOT.jar
+web: java -Duser.timezone=GMT-3 -Dserver.port=$PORT -Dspring.profiles.active=prod $JAVA_OPTS -jar target/SpringBoot_Ionic-0.0.1-SNAPSHOT.jar
