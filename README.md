@@ -3,8 +3,8 @@
 
 # Sobre o projeto
 
-Aplicação full stack de um sistema de pedidos, no qual o usuário pode simular uma compra e receber uma confirmação do seu pedido no email cadastrado.
-
+Aplicação full stack de um sistema de pedidos, no qual o usuário pode simular uma compra e receber uma confirmação do seu pedido no email cadastrado. Para usuários com 
+perfil de administrador, é possivel realizar outras tarefas, como adicionar e atualizar produtos e categorias, além de ver todos os pedidos e usuários cadastrados no aplicativo.
 
 ## Modelo Conceitual
 ![MODELO 1](https://github.com/FelipeMilana/Assets/blob/main/springboot_ionic%231.png)
